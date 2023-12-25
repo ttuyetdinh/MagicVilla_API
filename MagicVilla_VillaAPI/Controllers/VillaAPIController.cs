@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MagicVilla_VillaAPI.Data;
+using MagicVilla_VillaAPI.Logging;
 using MagicVilla_VillaAPI.Model;
 using MagicVilla_VillaAPI.Model.DTO;
 using Microsoft.AspNetCore.JsonPatch;
@@ -14,10 +15,24 @@ namespace MagicVilla_VillaAPI.Controllers
     [Route("api/[controller]")]
     public class VillaAPIController : ControllerBase
     {
+        // private readonly ILogger<VillaAPIController> _logger;
+
+        // public VillaAPIController(ILogger<VillaAPIController> logger)  
+        // {
+        //     _logger = logger;
+        // }
+
+        private readonly ILogging _logger;
+        public VillaAPIController(ILogging logger){
+            _logger = logger;
+        }
+
         [HttpGet]
         public ActionResult<IEnumerable<VillaDTO>> GetVillas()
         {
             var villaList = VillaStore.villaList;
+            // _logger.LogInformation($"Finished retrieving {villaList.Count} villa");
+            _logger.Log($"Finished retrieving {villaList.Count} villa");
             return Ok(villaList);
         }
 
