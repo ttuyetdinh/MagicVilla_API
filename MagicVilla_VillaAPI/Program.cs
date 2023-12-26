@@ -1,3 +1,4 @@
+using MagicVilla_VillaAPI;
 using MagicVilla_VillaAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -9,9 +10,9 @@ builder.Services.AddDbContext<ApplicationDbContext>( option => {
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services
-    .AddControllers()
-    .AddNewtonsoftJson();
+builder.Services.AddControllers().AddNewtonsoftJson();
+
+builder.Services.AddAutoMapper(typeof(MappingConfig));
 
 // create an instance of LoggerConfiguration class belong to Serilog
 // Log.Logger = new LoggerConfiguration()
