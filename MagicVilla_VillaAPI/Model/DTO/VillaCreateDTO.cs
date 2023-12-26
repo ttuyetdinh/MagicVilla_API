@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace MagicVilla_VillaAPI.Model.DTO
 {
-
-    public class VillaDTO
+    public class VillaCreateDTO
     {
-        public int Id { get; set; }
-
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }
@@ -29,5 +26,5 @@ namespace MagicVilla_VillaAPI.Model.DTO
         public string ImageUrl { get; set; }
         
         public int Age { get; set; }
-    };
+    }
 }
