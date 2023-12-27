@@ -19,7 +19,8 @@ namespace MagicVilla_VillaAPI.Repository
             _db = db;
         }
         public async Task<Villa> UpdateAsync(Villa entity)
-        {
+        {   
+            entity.UpdateDate = DateTime.Now;
             _db.Villas.Update(entity);
             
             // can use the method inherit from the Repository<Villa>
