@@ -4,6 +4,7 @@ using MagicVilla_VillaAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MagicVilla_VillaAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231227102249_CreateVillaNumbersTable")]
+    partial class CreateVillaNumbersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,7 +64,7 @@ namespace MagicVilla_VillaAPI.Migrations
                     b.Property<int>("Sqft")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -74,70 +77,70 @@ namespace MagicVilla_VillaAPI.Migrations
                             Id = 1,
                             Age = 23,
                             Amenity = "",
-                            CreatedDate = new DateTime(2023, 12, 27, 17, 32, 6, 373, DateTimeKind.Local).AddTicks(2723),
+                            CreatedDate = new DateTime(2023, 12, 27, 17, 22, 49, 543, DateTimeKind.Local).AddTicks(751),
                             Details = "BaoThw",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa3.jpg",
                             Name = "Royal Villa",
                             Occupancy = 4,
                             Rate = 200.0,
                             Sqft = 550,
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
                             Age = 23,
                             Amenity = "",
-                            CreatedDate = new DateTime(2023, 12, 27, 17, 32, 6, 373, DateTimeKind.Local).AddTicks(2739),
+                            CreatedDate = new DateTime(2023, 12, 27, 17, 22, 49, 543, DateTimeKind.Local).AddTicks(761),
                             Details = "Baotrxn",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa1.jpg",
                             Name = "Premium Pool Villa",
                             Occupancy = 4,
                             Rate = 300.0,
                             Sqft = 550,
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
                             Age = 23,
                             Amenity = "",
-                            CreatedDate = new DateTime(2023, 12, 27, 17, 32, 6, 373, DateTimeKind.Local).AddTicks(2741),
+                            CreatedDate = new DateTime(2023, 12, 27, 17, 22, 49, 543, DateTimeKind.Local).AddTicks(763),
                             Details = "Hgh",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa4.jpg",
                             Name = "Luxury Pool Villa",
                             Occupancy = 4,
                             Rate = 400.0,
                             Sqft = 750,
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 4,
                             Age = 23,
                             Amenity = "",
-                            CreatedDate = new DateTime(2023, 12, 27, 17, 32, 6, 373, DateTimeKind.Local).AddTicks(2742),
+                            CreatedDate = new DateTime(2023, 12, 27, 17, 22, 49, 543, DateTimeKind.Local).AddTicks(764),
                             Details = "Lanvieee",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa5.jpg",
                             Name = "Diamond Villa",
                             Occupancy = 4,
                             Rate = 550.0,
                             Sqft = 900,
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 5,
                             Age = 23,
                             Amenity = "",
-                            CreatedDate = new DateTime(2023, 12, 27, 17, 32, 6, 373, DateTimeKind.Local).AddTicks(2744),
+                            CreatedDate = new DateTime(2023, 12, 27, 17, 22, 49, 543, DateTimeKind.Local).AddTicks(766),
                             Details = "yenle",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa2.jpg",
                             Name = "Diamond Pool Villa",
                             Occupancy = 4,
                             Rate = 600.0,
                             Sqft = 1100,
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
