@@ -25,8 +25,8 @@ namespace MagicVilla_VillaAPI.Repository
 
             // can use the method inherit from the Repository<Villa>
             // because they are reference to the same dbcontext instance
-            await _db.SaveChangesAsync();
-            // await SaveAsync();
+            // await _db.SaveChangesAsync();
+            await SaveAsync();
 
             return entity;
         }
@@ -36,6 +36,7 @@ namespace MagicVilla_VillaAPI.Repository
             if (entity.CreatedDate == default)
             {
                 entity.CreatedDate = DateTime.Now;
+                entity.UpdatedDate = DateTime.Now;
             }
 
             await base.CreateAsync(entity);

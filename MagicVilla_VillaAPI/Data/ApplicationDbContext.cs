@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MagicVilla_VillaAPI.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace MagicVilla_VillaAPI.Data
 {
@@ -13,6 +14,7 @@ namespace MagicVilla_VillaAPI.Data
         public DbSet<Villa> Villas { get; set; }
         public DbSet<VillaNumber> VillaNumbers { get; set; }
 
+        // add sameple data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Villa>().HasData(
@@ -80,6 +82,30 @@ namespace MagicVilla_VillaAPI.Data
                     Amenity = "",
                     Age = 23,
                     CreatedDate = DateTime.Now
+                }
+            );
+
+            modelBuilder.Entity<VillaNumber>().HasData(
+                new VillaNumber
+                {
+                    VillaNo = 1,
+                    SpecialDetails = "detail of first num",
+                    VillaId = 1
+
+                },
+                new VillaNumber
+                {
+                    VillaNo = 2,
+                    SpecialDetails = "detail of second num",
+                    VillaId = 2
+
+                },
+                new VillaNumber
+                {
+                    VillaNo = 3,
+                    SpecialDetails = "detail of third num",
+                    VillaId = 2
+
                 }
             );
         }

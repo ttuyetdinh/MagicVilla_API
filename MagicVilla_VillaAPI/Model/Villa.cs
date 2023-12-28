@@ -23,5 +23,7 @@ namespace MagicVilla_VillaAPI.Model
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
 
+        public VillaNumber villaNumber { get; set; } // navigation key
+
     }
 }
