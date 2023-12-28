@@ -19,16 +19,26 @@ namespace MagicVilla_VillaAPI.Repository
             _db = db;
         }
         public async Task<Villa> UpdateAsync(Villa entity)
-        {   
+        {
             entity.UpdatedDate = DateTime.Now;
             _db.Villas.Update(entity);
-            
+
             // can use the method inherit from the Repository<Villa>
             // because they are reference to the same dbcontext instance
-            // await _db.SaveChangesAsync();
-            await SaveAsync();
+            await _db.SaveChangesAsync();
+            // await SaveAsync();
 
             return entity;
+        }
+
+        public override async Task CreateAsync(Villa entity)
+        {
+            if (entity.CreatedDate == default)
+            {
+                entity.CreatedDate = DateTime.Now;
+            }
+
+            await base.CreateAsync(entity);
         }
     }
 }

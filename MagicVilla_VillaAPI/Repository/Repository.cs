@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MagicVilla_VillaAPI.Repository
 {
-    public class Repository<T> : IRepository<T> where T :class
+    public class Repository<T> : IRepository<T> where T : class
     {
         private readonly ApplicationDbContext _db;
         internal DbSet<T> dbSet;
@@ -19,13 +19,13 @@ namespace MagicVilla_VillaAPI.Repository
             _db = db;
             dbSet = _db.Set<T>();
         }
-        public async Task CreateAsync(T entity)
+        public virtual async Task CreateAsync(T entity)
         {
             await dbSet.AddAsync(entity);
             await SaveAsync();
         }
 
-        public async Task<T> GetAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true)
+        public virtual async Task<T> GetAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true)
         {
             IQueryable<T> query = dbSet;
 
@@ -36,7 +36,7 @@ namespace MagicVilla_VillaAPI.Repository
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null)
+        public virtual async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null)
         {
             IQueryable<T> query = dbSet;
 
@@ -49,13 +49,13 @@ namespace MagicVilla_VillaAPI.Repository
 
         }
 
-        public async Task RemoveAsync(T entity)
+        public virtual async Task RemoveAsync(T entity)
         {
             dbSet.Remove(entity);
             await SaveAsync();
         }
 
-        public async Task SaveAsync()
+        public virtual async Task SaveAsync()
         {
             await _db.SaveChangesAsync();
         }
