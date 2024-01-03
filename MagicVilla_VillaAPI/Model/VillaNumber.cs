@@ -16,7 +16,7 @@ namespace MagicVilla_VillaAPI.Model
         public DateTime UpdatedDate { get; set; }
         [ForeignKey("Villa")]
         public int? VillaId { get; set; } // foregin key
-        public Villa? villa { get; set; } // navigation property
+        public Villa? Villa { get; set; } // navigation property
 
     }
 }

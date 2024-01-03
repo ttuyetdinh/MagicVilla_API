@@ -39,7 +39,8 @@ namespace MagicVilla_VillaAPI.Controllers
         {
             try
             {
-                var villaNumberList = await _dbVillaNumber.GetAllAsync();
+                var includeProperties = "Villa";
+                var villaNumberList = await _dbVillaNumber.GetAllAsync(includeProperties:includeProperties);
 
                 _logger.LogInformation($"Finished retrieving {villaNumberList.Count} villa");
 
@@ -67,6 +68,7 @@ namespace MagicVilla_VillaAPI.Controllers
         {
             try
             {
+                var includeProperties = "Villa";
                 if (id == 0)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
@@ -74,7 +76,7 @@ namespace MagicVilla_VillaAPI.Controllers
                     return BadRequest(_response);
                 }
 
-                var villa = await _dbVillaNumber.GetAsync(i => i.VillaNo == id);
+                var villa = await _dbVillaNumber.GetAsync(filter: i => i.VillaNo == id, includeProperties: includeProperties);
 
                 if (villa == null)
                 {
