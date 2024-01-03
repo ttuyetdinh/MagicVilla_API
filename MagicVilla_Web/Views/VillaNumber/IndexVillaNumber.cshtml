@@ -1,0 +1,47 @@
+@model IEnumerable<MagicVilla_Web.Models.DTO.VillaNumberDTO>
+
+<br />
+<div class="container p-4 border">
+    <div class="row pb-2">
+        <div class="col">
+            <h1 class="text-primary">Villa Number List</h1>
+        </div>
+        <div class="col text-end pt-1">
+            <a asp-controller="Villa" asp-action="CreateVilla" class="btn btn-outline-primary"><i
+                    class="bi bi-plus-square-fill"></i> Create new Villa Number</a>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Villa Name</th>
+                <th>Villa Number</th>
+                <th>Special Details</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item?.VillaId</td>
+                    <td>@(item?.VillaNo)</td>
+                    <td>@(item?.SpecialDetails)</td>
+                    <td>
+                        <a asp-controller="Villa" asp-action="UpdateVillaNumber" asp-route-villaId="@item?.VillaNo"
+                            class="btn btn-success">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <form asp-controller="Villa" asp-action="DeleteVillaNumber" asp-route-villaId="@item?.VillaNo" style="display:inline;">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Villa No?');">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </form>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

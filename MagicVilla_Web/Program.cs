@@ -16,6 +16,8 @@ namespace MagicVilla_Web
             builder.Services.AddHttpClient<IVillaServices, VillaServices>();
             builder.Services.AddScoped<IVillaServices, VillaServices>();
 
+            builder.Services.AddHttpClient<IVillaNumberServices, VillaNumberServices>();
+            builder.Services.AddScoped<IVillaNumberServices, VillaNumberServices>();
 
             var app = builder.Build();
 
