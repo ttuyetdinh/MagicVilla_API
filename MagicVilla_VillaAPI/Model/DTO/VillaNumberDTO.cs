@@ -13,7 +13,7 @@ namespace MagicVilla_VillaAPI.Model.DTO
         public int VillaNo { get; set; }
         [Required]    
         public int VillaId { get; set; } // foregin key
-        public string SpecialDetails { get; set; }
+        public string? SpecialDetails { get; set; }
         
     }
 }
