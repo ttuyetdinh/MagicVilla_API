@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MagicVilla_VillaAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class init_new_db : Migration
+    public partial class Initialize : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,21 +39,22 @@ namespace MagicVilla_VillaAPI.Migrations
                 name: "VillaNumbers",
                 columns: table => new
                 {
-                    VillaNo = table.Column<int>(type: "int", nullable: false),
-                    VillaId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VillaRoom = table.Column<int>(type: "int", nullable: false),
                     SpecialDetails = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    VillaId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VillaNumbers", x => new { x.VillaId, x.VillaNo });
+                    table.PrimaryKey("PK_VillaNumbers", x => x.Id);
                     table.ForeignKey(
                         name: "FK_VillaNumbers_Villas_VillaId",
                         column: x => x.VillaId,
                         principalTable: "Villas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
@@ -61,22 +62,27 @@ namespace MagicVilla_VillaAPI.Migrations
                 columns: new[] { "Id", "Age", "Amenity", "CreatedDate", "Details", "ImageUrl", "Name", "Occupancy", "Rate", "Sqft", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, 23, "", new DateTime(2024, 1, 4, 15, 55, 45, 246, DateTimeKind.Local).AddTicks(2467), "BaoThw", "https://dotnetmastery.com/bluevillaimages/villa3.jpg", "Royal Villa", 4, 200.0, 550, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, 23, "", new DateTime(2024, 1, 4, 15, 55, 45, 246, DateTimeKind.Local).AddTicks(2481), "Baotrxn", "https://dotnetmastery.com/bluevillaimages/villa1.jpg", "Premium Pool Villa", 4, 300.0, 550, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, 23, "", new DateTime(2024, 1, 4, 15, 55, 45, 246, DateTimeKind.Local).AddTicks(2483), "Hgh", "https://dotnetmastery.com/bluevillaimages/villa4.jpg", "Luxury Pool Villa", 4, 400.0, 750, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, 23, "", new DateTime(2024, 1, 4, 15, 55, 45, 246, DateTimeKind.Local).AddTicks(2486), "Lanvieee", "https://dotnetmastery.com/bluevillaimages/villa5.jpg", "Diamond Villa", 4, 550.0, 900, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 5, 23, "", new DateTime(2024, 1, 4, 15, 55, 45, 246, DateTimeKind.Local).AddTicks(2488), "yenle", "https://dotnetmastery.com/bluevillaimages/villa2.jpg", "Diamond Pool Villa", 4, 600.0, 1100, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, 23, "", new DateTime(2024, 1, 4, 17, 32, 6, 36, DateTimeKind.Local).AddTicks(9647), "BaoThw", "https://dotnetmastery.com/bluevillaimages/villa3.jpg", "Royal Villa", 4, 200.0, 550, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, 23, "", new DateTime(2024, 1, 4, 17, 32, 6, 36, DateTimeKind.Local).AddTicks(9660), "Baotrxn", "https://dotnetmastery.com/bluevillaimages/villa1.jpg", "Premium Pool Villa", 4, 300.0, 550, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, 23, "", new DateTime(2024, 1, 4, 17, 32, 6, 36, DateTimeKind.Local).AddTicks(9662), "Hgh", "https://dotnetmastery.com/bluevillaimages/villa4.jpg", "Luxury Pool Villa", 4, 400.0, 750, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, 23, "", new DateTime(2024, 1, 4, 17, 32, 6, 36, DateTimeKind.Local).AddTicks(9664), "Lanvieee", "https://dotnetmastery.com/bluevillaimages/villa5.jpg", "Diamond Villa", 4, 550.0, 900, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, 23, "", new DateTime(2024, 1, 4, 17, 32, 6, 36, DateTimeKind.Local).AddTicks(9666), "yenle", "https://dotnetmastery.com/bluevillaimages/villa2.jpg", "Diamond Pool Villa", 4, 600.0, 1100, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
                 table: "VillaNumbers",
-                columns: new[] { "VillaId", "VillaNo", "CreatedDate", "SpecialDetails", "UpdatedDate" },
+                columns: new[] { "Id", "CreatedDate", "SpecialDetails", "UpdatedDate", "VillaId", "VillaRoom" },
                 values: new object[,]
                 {
-                    { 1, 100, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "detail of first num", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, 200, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "detail of second num", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, 300, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "detail of third num", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "detail of first num", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 100 },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "detail of second num", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 200 },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "detail of third num", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 300 }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VillaNumbers_VillaId",
+                table: "VillaNumbers",
+                column: "VillaId");
         }
 
         /// <inheritdoc />

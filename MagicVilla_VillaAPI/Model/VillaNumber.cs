@@ -10,12 +10,12 @@ namespace MagicVilla_VillaAPI.Model
 {   
     public class VillaNumber
     {   
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int VillaNo { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public int VillaRoom { get; set; }
         public string? SpecialDetails { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
-        [ForeignKey("Villa")]
         public int? VillaId { get; set; } // foregin key
         public Villa? Villa { get; set; } // navigation property
 

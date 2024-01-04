@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MagicVilla_VillaAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240104085545_init_new_db")]
-    partial class init_new_db
+    [Migration("20240104103206_Initialize")]
+    partial class Initialize
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,7 +73,7 @@ namespace MagicVilla_VillaAPI.Migrations
                             Id = 1,
                             Age = 23,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 1, 4, 15, 55, 45, 246, DateTimeKind.Local).AddTicks(2467),
+                            CreatedDate = new DateTime(2024, 1, 4, 17, 32, 6, 36, DateTimeKind.Local).AddTicks(9647),
                             Details = "BaoThw",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa3.jpg",
                             Name = "Royal Villa",
@@ -87,7 +87,7 @@ namespace MagicVilla_VillaAPI.Migrations
                             Id = 2,
                             Age = 23,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 1, 4, 15, 55, 45, 246, DateTimeKind.Local).AddTicks(2481),
+                            CreatedDate = new DateTime(2024, 1, 4, 17, 32, 6, 36, DateTimeKind.Local).AddTicks(9660),
                             Details = "Baotrxn",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa1.jpg",
                             Name = "Premium Pool Villa",
@@ -101,7 +101,7 @@ namespace MagicVilla_VillaAPI.Migrations
                             Id = 3,
                             Age = 23,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 1, 4, 15, 55, 45, 246, DateTimeKind.Local).AddTicks(2483),
+                            CreatedDate = new DateTime(2024, 1, 4, 17, 32, 6, 36, DateTimeKind.Local).AddTicks(9662),
                             Details = "Hgh",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa4.jpg",
                             Name = "Luxury Pool Villa",
@@ -115,7 +115,7 @@ namespace MagicVilla_VillaAPI.Migrations
                             Id = 4,
                             Age = 23,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 1, 4, 15, 55, 45, 246, DateTimeKind.Local).AddTicks(2486),
+                            CreatedDate = new DateTime(2024, 1, 4, 17, 32, 6, 36, DateTimeKind.Local).AddTicks(9664),
                             Details = "Lanvieee",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa5.jpg",
                             Name = "Diamond Villa",
@@ -129,7 +129,7 @@ namespace MagicVilla_VillaAPI.Migrations
                             Id = 5,
                             Age = 23,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 1, 4, 15, 55, 45, 246, DateTimeKind.Local).AddTicks(2488),
+                            CreatedDate = new DateTime(2024, 1, 4, 17, 32, 6, 36, DateTimeKind.Local).AddTicks(9666),
                             Details = "yenle",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa2.jpg",
                             Name = "Diamond Pool Villa",
@@ -142,11 +142,11 @@ namespace MagicVilla_VillaAPI.Migrations
 
             modelBuilder.Entity("MagicVilla_VillaAPI.Model.VillaNumber", b =>
                 {
-                    b.Property<int?>("VillaId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("VillaNo")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -157,34 +157,45 @@ namespace MagicVilla_VillaAPI.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("VillaId", "VillaNo");
+                    b.Property<int?>("VillaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VillaRoom")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VillaId");
 
                     b.ToTable("VillaNumbers");
 
                     b.HasData(
                         new
                         {
-                            VillaId = 1,
-                            VillaNo = 100,
+                            Id = 1,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SpecialDetails = "detail of first num",
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VillaId = 1,
+                            VillaRoom = 100
                         },
                         new
                         {
-                            VillaId = 2,
-                            VillaNo = 200,
+                            Id = 2,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SpecialDetails = "detail of second num",
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VillaId = 2,
+                            VillaRoom = 200
                         },
                         new
                         {
-                            VillaId = 2,
-                            VillaNo = 300,
+                            Id = 3,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SpecialDetails = "detail of third num",
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VillaId = 2,
+                            VillaRoom = 300
                         });
                 });
 
@@ -192,9 +203,7 @@ namespace MagicVilla_VillaAPI.Migrations
                 {
                     b.HasOne("MagicVilla_VillaAPI.Model.Villa", "Villa")
                         .WithMany("VillaNumbers")
-                        .HasForeignKey("VillaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("VillaId");
 
                     b.Navigation("Villa");
                 });

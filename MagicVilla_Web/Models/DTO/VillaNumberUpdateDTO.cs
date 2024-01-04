@@ -9,8 +9,9 @@ namespace MagicVilla_Web.Models.DTO
 {
     public class VillaNumberUpdateDTO
     {
+        public int Id { get; set; }
         [Required]
-        public int VillaNo { get; set; }   
+        public int VillaRoom { get; set; }   
         [Required]
         public int VillaId { get; set; } // foregin key 
         public string? SpecialDetails { get; set; }

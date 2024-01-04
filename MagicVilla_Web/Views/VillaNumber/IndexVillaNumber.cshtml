@@ -26,14 +26,14 @@
             {
                 <tr>
                     <td>@item?.Villa?.Name</td>
-                    <td>@(item?.VillaNo)</td>
+                    <td>@(item?.VillaRoom)</td>
                     <td>@(item?.SpecialDetails)</td>
                     <td>
-                        <a asp-controller="VillaNumber" asp-action="UpdateVillaNumber" asp-route-villaNo="@item?.VillaNo"
+                        <a asp-controller="VillaNumber" asp-action="UpdateVillaNumber" asp-route-Id="@item?.Id"
                             class="btn btn-success">
                             <i class="bi bi-pencil-square"></i>
                         </a>
-                        <form asp-controller="VillaNumber" asp-action="DeleteVillaNumber" asp-route-villaNo="@item?.VillaNo" style="display:inline;">
+                        <form asp-controller="VillaNumber" asp-action="DeleteVillaNumber" asp-route-Id="@item?.Id" style="display:inline;">
                             <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Villa No?');">
                                 <i class="bi bi-trash-fill"></i>
                             </button>

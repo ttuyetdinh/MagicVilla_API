@@ -17,7 +17,7 @@ namespace MagicVilla_VillaAPI.Data
         // add sameple data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {   
-            modelBuilder.Entity<VillaNumber>().HasKey(c=> new{c.VillaId, c.VillaNo});
+            modelBuilder.Entity<VillaNumber>().HasKey(c=> new{c.Id});
 
             modelBuilder.Entity<Villa>().HasData(
                 new Villa
@@ -31,7 +31,8 @@ namespace MagicVilla_VillaAPI.Data
                     Sqft = 550,
                     Amenity = "",
                     Age = 23,
-                    CreatedDate = DateTime.Now
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now
                 },
                 new Villa
                 {
@@ -44,7 +45,8 @@ namespace MagicVilla_VillaAPI.Data
                     Sqft = 550,
                     Amenity = "",
                     Age = 23,
-                    CreatedDate = DateTime.Now
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now
                 },
                 new Villa
                 {
@@ -57,7 +59,8 @@ namespace MagicVilla_VillaAPI.Data
                     Sqft = 750,
                     Amenity = "",
                     Age = 23,
-                    CreatedDate = DateTime.Now
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now
                 },
                 new Villa
                 {
@@ -70,7 +73,8 @@ namespace MagicVilla_VillaAPI.Data
                     Sqft = 900,
                     Amenity = "",
                     Age = 23,
-                    CreatedDate = DateTime.Now
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now
                 },
                 new Villa
                 {
@@ -83,30 +87,39 @@ namespace MagicVilla_VillaAPI.Data
                     Sqft = 1100,
                     Amenity = "",
                     Age = 23,
-                    CreatedDate = DateTime.Now
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now
                 }
             );
 
             modelBuilder.Entity<VillaNumber>().HasData(
                 new VillaNumber
-                {
-                    VillaNo = 100,
+                {   Id = 1,
+                    VillaRoom = 100,
                     SpecialDetails = "detail of first num",
-                    VillaId = 1
+                    VillaId = 1,
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now
 
                 },
                 new VillaNumber
-                {
-                    VillaNo = 200,
+                {   
+                    Id = 2,
+                    VillaRoom = 200,
                     SpecialDetails = "detail of second num",
-                    VillaId = 2
+                    VillaId = 2,
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now
 
                 },
                 new VillaNumber
-                {
-                    VillaNo = 300,
+                {   
+                    Id = 3,
+                    VillaRoom = 300,
                     SpecialDetails = "detail of third num",
-                    VillaId = 2
+                    VillaId = 2,
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now
 
                 }
             );

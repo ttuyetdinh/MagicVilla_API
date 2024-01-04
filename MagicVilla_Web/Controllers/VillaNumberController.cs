@@ -105,11 +105,11 @@ namespace MagicVilla_Web.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> UpdateVillaNumber(int villaNo)
+        public async Task<IActionResult> UpdateVillaNumber(int Id)
         {
             var villaNumberVM = new VillaNumberUpdateVM();
 
-            var response = await _villaNumberServices.GetAsync<APIResponse>(villaNo);
+            var response = await _villaNumberServices.GetAsync<APIResponse>(Id);
             if (response == null || response.IsSuccess == false) return NotFound();
 
             VillaNumberDTO villaNumberDTO = JsonConvert
@@ -177,12 +177,12 @@ namespace MagicVilla_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteVillaNumber(int villaNo)
+        public async Task<IActionResult> DeleteVillaNumber(int Id)
         {
             if (ModelState.IsValid)
             {
 
-                var response = await _villaNumberServices.DeleteAsync<APIResponse>(villaNo);
+                var response = await _villaNumberServices.DeleteAsync<APIResponse>(Id);
                 if (response != null && response.IsSuccess)
                 {
                     return RedirectToAction(nameof(IndexVillaNumber));

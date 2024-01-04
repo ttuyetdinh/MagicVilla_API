@@ -42,7 +42,7 @@ namespace MagicVilla_VillaAPI.Controllers
                 var includeProperties = "Villa";
                 var villaNumberList = await _dbVillaNumber.GetAllAsync(includeProperties:includeProperties);
 
-                _logger.LogInformation($"Finished retrieving {villaNumberList.Count} villa");
+                _logger.LogInformation($"Finished retrieving {villaNumberList.Count} villa rooms");
 
                 _response.Result = _mapper.Map<List<VillaNumberDTO>>(villaNumberList);
                 _response.StatusCode = HttpStatusCode.OK;
@@ -76,7 +76,7 @@ namespace MagicVilla_VillaAPI.Controllers
                     return BadRequest(_response);
                 }
 
-                var villa = await _dbVillaNumber.GetAsync(filter: i => i.VillaNo == id, includeProperties: includeProperties);
+                var villa = await _dbVillaNumber.GetAsync(filter: i => i.Id == id, includeProperties: includeProperties);
 
                 if (villa == null)
                 {
@@ -111,21 +111,21 @@ namespace MagicVilla_VillaAPI.Controllers
         {
             try
             {
-                if (villaNumberDTO.VillaNo == 0)
+                if (villaNumberDTO.VillaRoom == 0)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     _response.ErrorMessage = new List<string>(){
-                        $"villa Number can be 0"
+                        $"villa Room can be 0"
                     };
 
                     return BadRequest(_response);
                 }
 
-                if (await _dbVillaNumber.GetAsync(i => i.VillaNo == villaNumberDTO.VillaNo && i.VillaId == villaNumberDTO.VillaId) != null)
+                if (await _dbVillaNumber.GetAsync(i => i.VillaRoom == villaNumberDTO.VillaRoom && i.VillaId == villaNumberDTO.VillaId) != null)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     _response.ErrorMessage = new List<string>(){
-                        $"Villa Number is already exist for this Villa"
+                        $"Villa Room is already exist for this Villa"
                     };
                     return BadRequest(_response);
                 }
@@ -147,7 +147,7 @@ namespace MagicVilla_VillaAPI.Controllers
                 _response.StatusCode = HttpStatusCode.Created;
 
 
-                return CreatedAtRoute("GetVillaNumber", new { id = villaNumberData.VillaNo }, _response);
+                return CreatedAtRoute("GetVillaNumber", new { id = villaNumberData.Id }, _response);
             }
             catch (Exception e)
             {
@@ -175,7 +175,7 @@ namespace MagicVilla_VillaAPI.Controllers
                     return BadRequest(_response);
                 }
 
-                var villa = await _dbVillaNumber.GetAsync(i => i.VillaNo == id);
+                var villa = await _dbVillaNumber.GetAsync(i => i.Id == id);
 
                 if (villa == null)
                 {
@@ -210,12 +210,12 @@ namespace MagicVilla_VillaAPI.Controllers
         {
             try
             {
-                if (updateVillaNumberDTO == null || id != updateVillaNumberDTO.VillaNo)
+                if (updateVillaNumberDTO == null || id != updateVillaNumberDTO.Id)
                 {
                     return BadRequest();
                 }
 
-                var villa = await _dbVillaNumber.GetAsync(i => i.VillaNo == id);
+                var villa = await _dbVillaNumber.GetAsync(i => i.Id == id);
 
                 if (villa == null)
                 {
@@ -269,7 +269,7 @@ namespace MagicVilla_VillaAPI.Controllers
                     return BadRequest();
                 }
 
-                var villaNumber = await _dbVillaNumber.GetAsync(i => i.VillaNo == id);
+                var villaNumber = await _dbVillaNumber.GetAsync(i => i.Id == id);
 
                 if (villaNumber == null)
                 {
