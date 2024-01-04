@@ -4,12 +4,13 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace MagicVilla_VillaAPI.Model
-{
+{   
     public class VillaNumber
-    {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
+    {   
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int VillaNo { get; set; }
         public string? SpecialDetails { get; set; }
         public DateTime CreatedDate { get; set; }

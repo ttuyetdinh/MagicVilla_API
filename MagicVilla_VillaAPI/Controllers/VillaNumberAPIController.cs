@@ -121,11 +121,11 @@ namespace MagicVilla_VillaAPI.Controllers
                     return BadRequest(_response);
                 }
 
-                if (await _dbVillaNumber.GetAsync(i => i.VillaNo == villaNumberDTO.VillaNo) != null)
+                if (await _dbVillaNumber.GetAsync(i => i.VillaNo == villaNumberDTO.VillaNo && i.VillaId == villaNumberDTO.VillaId) != null)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     _response.ErrorMessage = new List<string>(){
-                        $"Villa Number is already exsit"
+                        $"Villa Number is already exist for this Villa"
                     };
                     return BadRequest(_response);
                 }
@@ -134,7 +134,7 @@ namespace MagicVilla_VillaAPI.Controllers
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     _response.ErrorMessage = new List<string>(){
-                        $"Villa Id is not exsit"
+                        $"Villa Id is not exist"
                     };
                     return BadRequest(_response);
                 }

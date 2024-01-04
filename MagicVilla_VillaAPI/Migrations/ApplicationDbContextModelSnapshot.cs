@@ -70,7 +70,7 @@ namespace MagicVilla_VillaAPI.Migrations
                             Id = 1,
                             Age = 23,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 1, 3, 13, 18, 11, 668, DateTimeKind.Local).AddTicks(3570),
+                            CreatedDate = new DateTime(2024, 1, 4, 15, 55, 45, 246, DateTimeKind.Local).AddTicks(2467),
                             Details = "BaoThw",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa3.jpg",
                             Name = "Royal Villa",
@@ -84,7 +84,7 @@ namespace MagicVilla_VillaAPI.Migrations
                             Id = 2,
                             Age = 23,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 1, 3, 13, 18, 11, 668, DateTimeKind.Local).AddTicks(3581),
+                            CreatedDate = new DateTime(2024, 1, 4, 15, 55, 45, 246, DateTimeKind.Local).AddTicks(2481),
                             Details = "Baotrxn",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa1.jpg",
                             Name = "Premium Pool Villa",
@@ -98,7 +98,7 @@ namespace MagicVilla_VillaAPI.Migrations
                             Id = 3,
                             Age = 23,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 1, 3, 13, 18, 11, 668, DateTimeKind.Local).AddTicks(3583),
+                            CreatedDate = new DateTime(2024, 1, 4, 15, 55, 45, 246, DateTimeKind.Local).AddTicks(2483),
                             Details = "Hgh",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa4.jpg",
                             Name = "Luxury Pool Villa",
@@ -112,7 +112,7 @@ namespace MagicVilla_VillaAPI.Migrations
                             Id = 4,
                             Age = 23,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 1, 3, 13, 18, 11, 668, DateTimeKind.Local).AddTicks(3585),
+                            CreatedDate = new DateTime(2024, 1, 4, 15, 55, 45, 246, DateTimeKind.Local).AddTicks(2486),
                             Details = "Lanvieee",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa5.jpg",
                             Name = "Diamond Villa",
@@ -126,7 +126,7 @@ namespace MagicVilla_VillaAPI.Migrations
                             Id = 5,
                             Age = 23,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 1, 3, 13, 18, 11, 668, DateTimeKind.Local).AddTicks(3587),
+                            CreatedDate = new DateTime(2024, 1, 4, 15, 55, 45, 246, DateTimeKind.Local).AddTicks(2488),
                             Details = "yenle",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa2.jpg",
                             Name = "Diamond Pool Villa",
@@ -139,6 +139,9 @@ namespace MagicVilla_VillaAPI.Migrations
 
             modelBuilder.Entity("MagicVilla_VillaAPI.Model.VillaNumber", b =>
                 {
+                    b.Property<int?>("VillaId")
+                        .HasColumnType("int");
+
                     b.Property<int>("VillaNo")
                         .HasColumnType("int");
 
@@ -151,56 +154,51 @@ namespace MagicVilla_VillaAPI.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("VillaId")
-                        .HasColumnType("int");
-
-                    b.HasKey("VillaNo");
-
-                    b.HasIndex("VillaId")
-                        .IsUnique()
-                        .HasFilter("[VillaId] IS NOT NULL");
+                    b.HasKey("VillaId", "VillaNo");
 
                     b.ToTable("VillaNumbers");
 
                     b.HasData(
                         new
                         {
-                            VillaNo = 1,
+                            VillaId = 1,
+                            VillaNo = 100,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SpecialDetails = "detail of first num",
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VillaId = 1
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            VillaNo = 2,
+                            VillaId = 2,
+                            VillaNo = 200,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SpecialDetails = "detail of second num",
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VillaId = 2
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            VillaNo = 3,
+                            VillaId = 2,
+                            VillaNo = 300,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SpecialDetails = "detail of third num",
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VillaId = 2
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
             modelBuilder.Entity("MagicVilla_VillaAPI.Model.VillaNumber", b =>
                 {
-                    b.HasOne("MagicVilla_VillaAPI.Model.Villa", "villa")
-                        .WithOne("villaNumber")
-                        .HasForeignKey("MagicVilla_VillaAPI.Model.VillaNumber", "VillaId");
+                    b.HasOne("MagicVilla_VillaAPI.Model.Villa", "Villa")
+                        .WithMany("VillaNumbers")
+                        .HasForeignKey("VillaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("villa");
+                    b.Navigation("Villa");
                 });
 
             modelBuilder.Entity("MagicVilla_VillaAPI.Model.Villa", b =>
                 {
-                    b.Navigation("villaNumber");
+                    b.Navigation("VillaNumbers");
                 });
 #pragma warning restore 612, 618
         }

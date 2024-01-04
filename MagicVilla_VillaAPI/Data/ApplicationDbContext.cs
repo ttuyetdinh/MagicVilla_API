@@ -16,7 +16,9 @@ namespace MagicVilla_VillaAPI.Data
 
         // add sameple data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        {   
+            modelBuilder.Entity<VillaNumber>().HasKey(c=> new{c.VillaId, c.VillaNo});
+
             modelBuilder.Entity<Villa>().HasData(
                 new Villa
                 {
@@ -88,21 +90,21 @@ namespace MagicVilla_VillaAPI.Data
             modelBuilder.Entity<VillaNumber>().HasData(
                 new VillaNumber
                 {
-                    VillaNo = 1,
+                    VillaNo = 100,
                     SpecialDetails = "detail of first num",
                     VillaId = 1
 
                 },
                 new VillaNumber
                 {
-                    VillaNo = 2,
+                    VillaNo = 200,
                     SpecialDetails = "detail of second num",
                     VillaId = 2
 
                 },
                 new VillaNumber
                 {
-                    VillaNo = 3,
+                    VillaNo = 300,
                     SpecialDetails = "detail of third num",
                     VillaId = 2
 
