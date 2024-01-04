@@ -31,19 +31,32 @@ namespace MagicVilla_Web.Services
                 HttpRequestMessage message = new HttpRequestMessage();
                 message.Headers.Add("Accept", "application/json");
                 message.RequestUri = new Uri(apiRequest.Url);
-
                 if (apiRequest.Data != null)
                 {
                     message.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data), Encoding.UTF8, "application/json");
                 }
-
                 message.Method = GetHttpMethod(apiRequest.ApiType);
 
                 HttpResponseMessage apiResponse = await client.SendAsync(message);
                 var apiContent = await apiResponse.Content.ReadAsStringAsync();
-                var response = JsonConvert.DeserializeObject<T>(apiContent);
+                try
+                {
+                    APIResponse response = JsonConvert.DeserializeObject<APIResponse>(apiContent);
+                    if( response.StatusCode == System.Net.HttpStatusCode.NotFound 
+                        || response.StatusCode == System.Net.HttpStatusCode.BadRequest){
+                            response.IsSuccess = false;
+                    }
+                    var returnObj = JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(response));
 
-                return response;
+                    return returnObj;
+                }
+                catch (Exception e)
+                {
+
+                    var response = JsonConvert.DeserializeObject<T>(apiContent);
+                    return response;
+                }
+
 
             }
             catch (Exception e)
@@ -67,6 +80,7 @@ namespace MagicVilla_Web.Services
         {
             return apiType switch
             {
+                ApiType.GET => HttpMethod.Get,
                 ApiType.POST => HttpMethod.Post,
                 ApiType.PUT => HttpMethod.Put,
                 ApiType.DELETE => HttpMethod.Delete,
