@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
+using static MagicVilla_Ultility.SD;
+
 namespace MagicVilla_VillaAPI.Model
 {
     public class LocalUser
@@ -16,7 +18,7 @@ namespace MagicVilla_VillaAPI.Model
         [Required]
         public string? Password { get; set; }
         [Required]
-        public int? Role { get; set; }
+        public Role? Role { get; set; }
 
     }
 }

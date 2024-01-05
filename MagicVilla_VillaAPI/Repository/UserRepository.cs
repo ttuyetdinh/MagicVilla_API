@@ -11,6 +11,8 @@ using MagicVilla_VillaAPI.Model.DTO;
 using MagicVilla_VillaAPI.Repository.IRepository;
 using Microsoft.IdentityModel.Tokens;
 
+using static MagicVilla_Ultility.SD;
+
 namespace MagicVilla_VillaAPI.Repository
 {
     public class UserRepository : IUserRepository
@@ -34,7 +36,8 @@ namespace MagicVilla_VillaAPI.Repository
         public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequest)
         {
             var user = _db.LocalUsers.FirstOrDefault(u => u.UserName == loginRequest.UserName && u.Password == loginRequest.Password);
-            if (user == null) return new LoginResponseDTO{
+            if (user == null) return new LoginResponseDTO
+            {
                 Token = "",
                 localUser = null
             };
@@ -47,7 +50,7 @@ namespace MagicVilla_VillaAPI.Repository
             {
                 Subject = new ClaimsIdentity(new Claim[]{
                     new Claim(ClaimTypes.Name, user.Id.ToString()),
-                    new Claim(ClaimTypes.Role, user.Role.ToString()),
+                    new Claim(ClaimTypes.Role, GetRole(user.Role)),     
                 }),
                 Expires = DateTime.Now.AddDays(7),
                 SigningCredentials = new SigningCredentials(
@@ -82,6 +85,18 @@ namespace MagicVilla_VillaAPI.Repository
 
             newUser.Password = "";
             return newUser;
+        }
+
+        // ultilities
+        private string GetRole(Role? role)
+        {
+            return role switch
+            {
+                Role.Admin => Role.Admin.ToString(),
+                Role.User => Role.User.ToString(),
+                Role.CustomRole => Role.CustomRole.ToString(),
+                _ => Role.Admin.ToString()
+            };
         }
     }
 }

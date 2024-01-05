@@ -8,5 +8,12 @@
             PUT,
             DELETE
         }
+
+        public enum Role{
+            Admin,
+            User,
+            CustomRole
+        }
     }
+
 }
