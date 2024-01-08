@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -36,6 +37,11 @@ namespace MagicVilla_Web.Services
                     message.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data), Encoding.UTF8, "application/json");
                 }
                 message.Method = GetHttpMethod(apiRequest.ApiType);
+
+                // 
+                if(!string.IsNullOrEmpty(apiRequest.Token)){
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",apiRequest.Token);
+                }
 
                 HttpResponseMessage apiResponse = await client.SendAsync(message);
                 var apiContent = await apiResponse.Content.ReadAsStringAsync();
