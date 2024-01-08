@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
+using MagicVilla_Ultility;
 using MagicVilla_VillaAPI.Data;
 using MagicVilla_VillaAPI.Model;
 using MagicVilla_VillaAPI.Model.DTO;
@@ -59,7 +60,7 @@ namespace MagicVilla_VillaAPI.Controllers
             return _response;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(SD.Role.Admin))]
         [HttpGet("{id:int}", Name = "GetVilla")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -101,8 +102,8 @@ namespace MagicVilla_VillaAPI.Controllers
             return _response;
 
         }
-        
-       [Authorize(Roles = "Admin")]
+
+        [Authorize(Roles = nameof(SD.Role.Admin))]
         [HttpGet("{name}", Name = "GetVillaName")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -144,7 +145,7 @@ namespace MagicVilla_VillaAPI.Controllers
             return _response;
         }
 
-       [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(SD.Role.Admin))]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -192,7 +193,7 @@ namespace MagicVilla_VillaAPI.Controllers
             return _response;
         }
 
-      [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(SD.Role.Admin))]
         [HttpDelete("{id:int}", Name = "DeleteVilla")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -234,7 +235,7 @@ namespace MagicVilla_VillaAPI.Controllers
             return _response;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(SD.Role.Admin))]
         [HttpPut("{id:int}", Name = "UpdateVilla")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -268,7 +269,7 @@ namespace MagicVilla_VillaAPI.Controllers
             return _response;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(SD.Role.Admin))]
         [HttpPatch("{id:int}", Name = "UpdatePatchVilla")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

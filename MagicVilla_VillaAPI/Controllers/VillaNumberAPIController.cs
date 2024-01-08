@@ -4,10 +4,12 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
+using MagicVilla_Ultility;
 using MagicVilla_VillaAPI.Data;
 using MagicVilla_VillaAPI.Model;
 using MagicVilla_VillaAPI.Model.DTO;
 using MagicVilla_VillaAPI.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -39,8 +41,9 @@ namespace MagicVilla_VillaAPI.Controllers
         {
             try
             {
+                System.Console.WriteLine(nameof(SD.Role.Admin));
                 var includeProperties = "Villa";
-                var villaNumberList = await _dbVillaNumber.GetAllAsync(includeProperties:includeProperties);
+                var villaNumberList = await _dbVillaNumber.GetAllAsync(includeProperties: includeProperties);
 
                 _logger.LogInformation($"Finished retrieving {villaNumberList.Count} villa rooms");
 
@@ -61,6 +64,7 @@ namespace MagicVilla_VillaAPI.Controllers
         }
 
         [HttpGet("{id:int}", Name = "GetVillaNumber")]
+        [Authorize(Roles = nameof(SD.Role.Admin))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -104,6 +108,7 @@ namespace MagicVilla_VillaAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = nameof(SD.Role.Admin))]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -161,6 +166,7 @@ namespace MagicVilla_VillaAPI.Controllers
         }
 
         [HttpDelete("{id:int}", Name = "DeleteVillaNumber")]
+        [Authorize(Roles = nameof(SD.Role.Admin))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -202,6 +208,7 @@ namespace MagicVilla_VillaAPI.Controllers
         }
 
         [HttpPut("{id:int}", Name = "UpdateVillaNumber")]
+        [Authorize(Roles = nameof(SD.Role.Admin))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -256,6 +263,7 @@ namespace MagicVilla_VillaAPI.Controllers
         }
 
         [HttpPatch("{id:int}", Name = "UpdatePatchVillaNumber")]
+        [Authorize(Roles = nameof(SD.Role.Admin))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -292,7 +300,7 @@ namespace MagicVilla_VillaAPI.Controllers
                 }
 
                 villaNumber = _mapper.Map(updateVillaDTO, villaNumber);
-                
+
                 if (await _dbVilla.GetAsync(i => i.Id == villaNumber.VillaId) == null)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
