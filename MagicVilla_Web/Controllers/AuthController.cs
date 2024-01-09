@@ -45,7 +45,6 @@ namespace MagicVilla_Web.Controllers
             if (response != null && response.IsSuccess)
             {
                 var model = JsonConvert.DeserializeObject<LoginResponseDTO>(Convert.ToString(response.Result));
-                HttpContext.Session.SetString(SD.SessionToken, model.Token);
 
                 var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
                 identity.AddClaim( new Claim(ClaimTypes.Name, model.localUser.Name));

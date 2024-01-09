@@ -27,7 +27,8 @@ namespace MagicVilla_Web
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // add authentication
-            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            builder.Services
+                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => {
                     options.Cookie.HttpOnly = true;
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
