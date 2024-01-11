@@ -48,8 +48,8 @@ namespace MagicVilla_Web.Services
                 try
                 {
                     APIResponse response = JsonConvert.DeserializeObject<APIResponse>(apiContent);
-                    if( response.StatusCode == System.Net.HttpStatusCode.NotFound 
-                        || response.StatusCode == System.Net.HttpStatusCode.BadRequest){
+                    if( response!=null && (response.StatusCode == System.Net.HttpStatusCode.NotFound 
+                        || response.StatusCode == System.Net.HttpStatusCode.BadRequest)){
                             response.IsSuccess = false;
                     }
                     var returnObj = JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(response));

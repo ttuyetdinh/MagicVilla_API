@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using MagicVilla_VillaAPI.Controllers.v1;
 using MagicVilla_VillaAPI.Model;
 using MagicVilla_VillaAPI.Model.DTO;
 using MagicVilla_VillaAPI.Repository.IRepository;
@@ -13,7 +14,8 @@ using Microsoft.Extensions.Logging;
 namespace MagicVilla_VillaAPI.Controllers
 {
     [ApiController]
-    [Route("api/UsersAuth")]
+    [Route("api/v{version:apiVersion}/UsersAuth")]
+    [ApiVersionNeutral]
     public class UserController : Controller
     {
         private readonly ILogger<VillaAPIController> _logger;

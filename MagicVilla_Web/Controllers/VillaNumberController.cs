@@ -9,6 +9,7 @@ using MagicVilla_Web.Models;
 using MagicVilla_Web.Models.DTO;
 using MagicVilla_Web.Models.VM;
 using MagicVilla_Web.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
@@ -44,6 +45,7 @@ namespace MagicVilla_Web.Controllers
 
         }
 
+        [Authorize(Roles = nameof(SD.Role.Admin))]
         public async Task<IActionResult> CreateVillaNumber()
         {
             VillaNumberCreateVM villaNumberVM = new VillaNumberCreateVM();
@@ -72,6 +74,7 @@ namespace MagicVilla_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = nameof(SD.Role.Admin))]
         public async Task<IActionResult> CreateVillaNumber(VillaNumberCreateVM model)
         {
             var sessionToken = HttpContext.Session.GetString(SD.SessionToken);
@@ -108,6 +111,7 @@ namespace MagicVilla_Web.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = nameof(SD.Role.Admin))]
         public async Task<IActionResult> UpdateVillaNumber(int Id)
         {
             var villaNumberVM = new VillaNumberUpdateVM();
@@ -144,6 +148,7 @@ namespace MagicVilla_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = nameof(SD.Role.Admin))]
         public async Task<IActionResult> UpdateVillaNumber(VillaNumberUpdateVM model)
         {
             var sessionToken = HttpContext.Session.GetString(SD.SessionToken);
@@ -181,6 +186,7 @@ namespace MagicVilla_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = nameof(SD.Role.Admin))]
         public async Task<IActionResult> DeleteVillaNumber(int Id)
         {
             if (ModelState.IsValid)

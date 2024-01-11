@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -14,10 +15,11 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace MagicVilla_VillaAPI.Controllers
+namespace MagicVilla_VillaAPI.Controllers.v1
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0",Deprecated = true)]
     public class VillaNumberAPIController : ControllerBase
     {
         private readonly ILogger<VillaNumberAPIController> _logger;
@@ -36,8 +38,17 @@ namespace MagicVilla_VillaAPI.Controllers
             _response = new APIResponse();
         }
 
+        [HttpGet("GetString", Name ="GetStringForU")]
+        public IEnumerable<string> GetVillasNumber2()
+        {
+            return new string[]{
+                "string 1 with verison 1",
+                "string 2 in version 1"
+            };
+        }
+
         [HttpGet]
-        public async Task<ActionResult<APIResponse>> GetVillas()
+        public async Task<ActionResult<APIResponse>> GetVillasNumber()
         {
             try
             {
