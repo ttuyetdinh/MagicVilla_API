@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
+using Azure;
 using MagicVilla_Ultility;
 using MagicVilla_VillaAPI.Data;
 using MagicVilla_VillaAPI.Model;
@@ -35,13 +37,19 @@ namespace MagicVilla_VillaAPI.Controllers.v1
         }
 
         [HttpGet]
-        [Authorize]
+        [ResponseCache(CacheProfileName = "Default30sec")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<APIResponse>> GetVillas()
+        public async Task<ActionResult<APIResponse>> GetVillas([FromQuery(Name = "explicitOcuppancy")] int? ocuppancy, [FromQuery] string? search, [FromQuery] Pagination? pagination)
         {
             try
             {
-                var villaList = await _dbVilla.GetAllAsync();
+                // filter in db
+                var villaList = ocuppancy == null ? await _dbVilla.GetAllAsync(pagination: pagination) : await _dbVilla.GetAllAsync(u => u.Occupancy == ocuppancy, pagination: pagination);
+
+                // filter the result get from
+                villaList = search != null ? villaList.Where(u => u.Name.ToLower().Contains(search)).ToList() : villaList;
+
+                Response.Headers.Add("X-pagination", JsonSerializer.Serialize(pagination));
 
                 _logger.LogInformation($"Finished retrieving {villaList.Count} villa");
 

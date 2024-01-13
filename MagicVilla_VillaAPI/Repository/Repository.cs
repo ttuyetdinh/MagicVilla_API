@@ -33,8 +33,10 @@ namespace MagicVilla_VillaAPI.Repository
 
             query = filter != null ? query.Where(filter) : query;
 
-            if(includeProperties != null){
-                foreach (var property in includeProperties.Split(new char[] { ','},StringSplitOptions.RemoveEmptyEntries)){
+            if (includeProperties != null)
+            {
+                foreach (var property in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
                     query = query.Include(property);
                 };
             }
@@ -42,18 +44,26 @@ namespace MagicVilla_VillaAPI.Repository
             return await query.FirstOrDefaultAsync();
         }
 
-        public virtual async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
+        public virtual async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, Pagination? pagination = null)
         {
             IQueryable<T> query = dbSet;
-
+            int pageSize = pagination?.PageSize ?? 0;
+            int pageNum = pagination?.PageNum ?? 0;
             if (filter != null)
             {
                 query = query.Where(filter);
             }
 
-            
-            if(includeProperties != null){
-                foreach (var property in includeProperties.Split(new char[] { ','},StringSplitOptions.RemoveEmptyEntries)){
+            if (pageSize > 0 && pageNum > 0)
+            {
+                pageSize = pageSize > 100 ? 100 : pageSize;
+                query = query.Skip(pageSize * (pageNum - 1)).Take(pageSize);
+            }
+
+            if (includeProperties != null)
+            {
+                foreach (var property in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
                     query = query.Include(property);
                 };
             }

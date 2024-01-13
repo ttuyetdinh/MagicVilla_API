@@ -18,7 +18,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddControllers().AddNewtonsoftJson();
+builder.Services.AddControllers(option =>
+{
+    option.CacheProfiles.Add("Default30sec",
+        new CacheProfile
+        {
+            Duration = 30
+        }
+    );
+}).AddNewtonsoftJson();
 
 builder.Services.AddScoped<IVillaRepository, VillaRepository>();
 builder.Services.AddScoped<IVillaNumberRepository, VillaNumberRepository>();
