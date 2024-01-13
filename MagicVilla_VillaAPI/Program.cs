@@ -1,9 +1,11 @@
 using System.Text;
 using MagicVilla_VillaAPI;
 using MagicVilla_VillaAPI.Data;
+using MagicVilla_VillaAPI.Model;
 using MagicVilla_VillaAPI.Repository;
 using MagicVilla_VillaAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -18,6 +20,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+
+
+// adding the response cache to the exist controller
+builder.Services.AddResponseCaching();
 builder.Services.AddControllers(option =>
 {
     option.CacheProfiles.Add("Default30sec",
@@ -137,6 +143,8 @@ if (app.Environment.IsDevelopment())
     }
     );
 }
+
+app.UseResponseCaching();
 
 app.UseHttpsRedirection();
 app.UseAuthentication();

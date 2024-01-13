@@ -37,7 +37,7 @@ namespace MagicVilla_VillaAPI.Controllers.v1
         }
 
         [HttpGet]
-        [ResponseCache(CacheProfileName = "Default30sec")]
+        [ResponseCache(CacheProfileName = "Default30sec",VaryByQueryKeys = new[] {"explicitOcuppancy", "search", "PageNum", "PageSize"} )]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<APIResponse>> GetVillas([FromQuery(Name = "explicitOcuppancy")] int? ocuppancy, [FromQuery] string? search, [FromQuery] Pagination? pagination)
         {
