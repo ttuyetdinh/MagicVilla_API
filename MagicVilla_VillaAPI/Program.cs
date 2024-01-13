@@ -20,7 +20,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-
+// set up ASP.NET Core Identity with custom class
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
 // adding the response cache to the exist controller
 builder.Services.AddResponseCaching();

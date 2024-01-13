@@ -38,7 +38,7 @@ namespace MagicVilla_VillaAPI.Controllers
         {
             var loginResponse = await _dbUser.Login(model);
 
-            if (loginResponse.localUser == null || loginResponse.Token == "")
+            if (loginResponse.ApplicationUser == null || loginResponse.Token == "")
             {
                 return BadRequest(new APIResponse
                 {

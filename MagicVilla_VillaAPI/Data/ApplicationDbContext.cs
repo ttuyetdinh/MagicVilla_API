@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MagicVilla_VillaAPI.Model;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 
 namespace MagicVilla_VillaAPI.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Villa> Villas { get; set; }
         public DbSet<VillaNumber> VillaNumbers { get; set; }
         public DbSet<LocalUser> LocalUsers { get; set; }
@@ -18,6 +20,8 @@ namespace MagicVilla_VillaAPI.Data
         // add sameple data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {   
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<VillaNumber>().HasKey(c=> new{c.Id});
 
             modelBuilder.Entity<Villa>().HasData(
