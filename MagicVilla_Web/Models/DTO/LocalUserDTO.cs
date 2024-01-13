@@ -11,14 +11,13 @@ namespace MagicVilla_Web.Models.DTO
     public class LocalUserDTO
     {
         
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [Required]
         public string? UserName { get; set; }
         public string? Name { get; set; }
         [Required]
         public string? Password { get; set; }
-        [Required]
-        public Role? Role { get; set; }
+        // public Role? Role { get; set; }
 
     }
 }

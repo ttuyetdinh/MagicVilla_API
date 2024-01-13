@@ -65,7 +65,7 @@ namespace MagicVilla_VillaAPI.Repository
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(new Claim[]{
-                    new Claim(ClaimTypes.Name, user.Id.ToString()),
+                    new Claim(ClaimTypes.Name, user.Name.ToString()),
                     new Claim(ClaimTypes.Role, roles.FirstOrDefault()),
                 }),
                 Expires = DateTime.Now.AddDays(7),
@@ -80,7 +80,7 @@ namespace MagicVilla_VillaAPI.Repository
             {
                 Token = tokenHandler.WriteToken(token),
                 ApplicationUser = _mapper.Map<UserDTO>(user),
-                Role = roles.FirstOrDefault()
+                // Role = roles.FirstOrDefault()
             };
 
             return loginResponseDTO;
