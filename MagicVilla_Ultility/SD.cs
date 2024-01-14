@@ -16,6 +16,9 @@
         }
 
         public static string SessionToken = "JWTToken";
+        public static string CurrentAPIVersion = "v2";
+        
+        
     }
 
 }

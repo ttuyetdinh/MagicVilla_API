@@ -139,8 +139,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Magic Villa v1");
         options.SwaggerEndpoint("/swagger/v2/swagger.json", "Magic Villa v2");
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Magic Villa v1");
     }
     );
 }
