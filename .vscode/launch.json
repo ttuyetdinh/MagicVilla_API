@@ -4,16 +4,16 @@
         {
             "name": "Full Application ",
             "configurations": [
-                ".NET Core Launch (Frontend)",
-                ".NET Core Launch (Backend)"
+                ".NET Core Launch (Backend)",
+                ".NET Core Launch (Frontend)"
             ],
             "stopAll": true
         },
         {
             "name": "Full Application (fe-hotreload)",
             "configurations": [
-                "Hot reload (Frontend)",
-                ".NET Core Launch (Backend)"
+                ".NET Core Launch (Backend)",
+                "Hot reload (Frontend)"
             ],
             "stopAll": true
         }

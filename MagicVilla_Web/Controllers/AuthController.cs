@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 using AutoMapper;
 using MagicVilla_Ultility;
 using MagicVilla_Web.Models;
@@ -12,9 +13,12 @@ using MagicVilla_Web.Models.DTO;
 using MagicVilla_Web.Services.IServices;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using static MagicVilla_Ultility.SD;
 
 namespace MagicVilla_Web.Controllers
 {
@@ -69,18 +73,34 @@ namespace MagicVilla_Web.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            RegisterationRequestDTO obj = new RegisterationRequestDTO();
+            RegisterationRequestDTO obj = new RegisterationRequestDTO(
+            ){
+                // Name="hello from here",
+                // UserName ="hi"
+            };
+            
+            var roleList = new List<SelectListItem>();
+            foreach(var role in Enum.GetValues(typeof(Role))){
+                roleList.Add(new SelectListItem(){Text = role.ToString(), Value = role.ToString()});
+            }
+            ViewBag.RoleList = roleList;
             return View(obj);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterationRequestDTO obj)
-        {
+        {   
+            obj.Role = obj.Role == null ? Role.User : obj.Role;
             var result = await _authServices.RegisterAsync<APIResponse>(obj);
 
             if (result != null && result.IsSuccess) return RedirectToAction("login");
 
+            var roleList = new List<SelectListItem>();
+            foreach(var role in Enum.GetValues(typeof(Role))){
+                roleList.Add(new SelectListItem(){Text = role.ToString(), Value = role.ToString()});
+            }
+            ViewBag.RoleList = roleList;
 
             return View(obj);
         }
