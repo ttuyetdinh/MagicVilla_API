@@ -1,0 +1,95 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        // for backend project
+        {
+            "label": "buildbackend",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/MagicVilla.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary;ForceNoAlign"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publishbackend",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "${workspaceFolder}/MagicVilla.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary;ForceNoAlign"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "watchbackend",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "--project",
+                "${workspaceFolder}/MagicVilla.sln"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+
+        // for frontend project
+        {
+            "label": "buildfrontend",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/MagicVilla.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary;ForceNoAlign"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publishfrontend",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "${workspaceFolder}/MagicVilla.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary;ForceNoAlign"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "watchfrontend",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "--project",
+                "${workspaceFolder}/MagicVilla_Web/MagicVilla_Web.csproj",
+                "--launch-profile",
+                "https",
+                "/property:GenerateFullPaths=true",
+            ],
+            "problemMatcher": "$msCompile",
+            "options": {
+                "env": {
+                    "DOTNET_WATCH_SUPPRESS_LAUNCH_BROWSER": "true"
+                }
+            }
+        },
+        {
+            "label": "stopWatch",
+            "command": "pkill",
+            "type": "shell",
+            "args": ["-f", "dotnet watch run"],
+            "problemMatcher": []
+        }
+    ]
+}
