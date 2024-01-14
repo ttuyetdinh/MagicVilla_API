@@ -35,9 +35,7 @@ namespace MagicVilla_VillaAPI.Data
                     Rate = 200,
                     Sqft = 550,
                     Amenity = "",
-                    Age = 23,
-                    CreatedDate = DateTime.Now,
-                    UpdatedDate = DateTime.Now
+                    Age = 23
                 },
                 new Villa
                 {
@@ -49,9 +47,7 @@ namespace MagicVilla_VillaAPI.Data
                     Rate = 300,
                     Sqft = 550,
                     Amenity = "",
-                    Age = 23,
-                    CreatedDate = DateTime.Now,
-                    UpdatedDate = DateTime.Now
+                    Age = 23
                 },
                 new Villa
                 {
@@ -63,9 +59,7 @@ namespace MagicVilla_VillaAPI.Data
                     Rate = 400,
                     Sqft = 750,
                     Amenity = "",
-                    Age = 23,
-                    CreatedDate = DateTime.Now,
-                    UpdatedDate = DateTime.Now
+                    Age = 23
                 },
                 new Villa
                 {
@@ -77,9 +71,7 @@ namespace MagicVilla_VillaAPI.Data
                     Rate = 550,
                     Sqft = 900,
                     Amenity = "",
-                    Age = 23,
-                    CreatedDate = DateTime.Now,
-                    UpdatedDate = DateTime.Now
+                    Age = 23
                 },
                 new Villa
                 {
@@ -91,9 +83,7 @@ namespace MagicVilla_VillaAPI.Data
                     Rate = 600,
                     Sqft = 1100,
                     Amenity = "",
-                    Age = 23,
-                    CreatedDate = DateTime.Now,
-                    UpdatedDate = DateTime.Now
+                    Age = 23
                 }
             );
 
@@ -102,9 +92,7 @@ namespace MagicVilla_VillaAPI.Data
                 {   Id = 1,
                     VillaRoom = 100,
                     SpecialDetails = "detail of first num",
-                    VillaId = 1,
-                    CreatedDate = DateTime.Now,
-                    UpdatedDate = DateTime.Now
+                    VillaId = 1
 
                 },
                 new VillaNumber
@@ -112,9 +100,7 @@ namespace MagicVilla_VillaAPI.Data
                     Id = 2,
                     VillaRoom = 200,
                     SpecialDetails = "detail of second num",
-                    VillaId = 2,
-                    CreatedDate = DateTime.Now,
-                    UpdatedDate = DateTime.Now
+                    VillaId = 2
 
                 },
                 new VillaNumber
@@ -122,9 +108,7 @@ namespace MagicVilla_VillaAPI.Data
                     Id = 3,
                     VillaRoom = 300,
                     SpecialDetails = "detail of third num",
-                    VillaId = 2,
-                    CreatedDate = DateTime.Now,
-                    UpdatedDate = DateTime.Now
+                    VillaId = 2
 
                 }
             );

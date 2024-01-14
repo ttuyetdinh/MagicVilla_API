@@ -166,70 +166,70 @@ namespace MagicVilla_VillaAPI.Migrations
                             Id = 1,
                             Age = 23,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 1, 13, 14, 38, 20, 908, DateTimeKind.Local).AddTicks(2499),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "BaoThw",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa3.jpg",
                             Name = "Royal Villa",
                             Occupancy = 4,
                             Rate = 200.0,
                             Sqft = 550,
-                            UpdatedDate = new DateTime(2024, 1, 13, 14, 38, 20, 908, DateTimeKind.Local).AddTicks(2513)
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
                             Age = 23,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 1, 13, 14, 38, 20, 908, DateTimeKind.Local).AddTicks(2516),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Baotrxn",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa1.jpg",
                             Name = "Premium Pool Villa",
                             Occupancy = 4,
                             Rate = 300.0,
                             Sqft = 550,
-                            UpdatedDate = new DateTime(2024, 1, 13, 14, 38, 20, 908, DateTimeKind.Local).AddTicks(2516)
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
                             Age = 23,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 1, 13, 14, 38, 20, 908, DateTimeKind.Local).AddTicks(2518),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Hgh",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa4.jpg",
                             Name = "Luxury Pool Villa",
                             Occupancy = 4,
                             Rate = 400.0,
                             Sqft = 750,
-                            UpdatedDate = new DateTime(2024, 1, 13, 14, 38, 20, 908, DateTimeKind.Local).AddTicks(2519)
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 4,
                             Age = 23,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 1, 13, 14, 38, 20, 908, DateTimeKind.Local).AddTicks(2521),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Lanvieee",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa5.jpg",
                             Name = "Diamond Villa",
                             Occupancy = 4,
                             Rate = 550.0,
                             Sqft = 900,
-                            UpdatedDate = new DateTime(2024, 1, 13, 14, 38, 20, 908, DateTimeKind.Local).AddTicks(2521)
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 5,
                             Age = 23,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 1, 13, 14, 38, 20, 908, DateTimeKind.Local).AddTicks(2523),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "yenle",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa2.jpg",
                             Name = "Diamond Pool Villa",
                             Occupancy = 4,
                             Rate = 600.0,
                             Sqft = 1100,
-                            UpdatedDate = new DateTime(2024, 1, 13, 14, 38, 20, 908, DateTimeKind.Local).AddTicks(2524)
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -266,27 +266,27 @@ namespace MagicVilla_VillaAPI.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2024, 1, 13, 14, 38, 20, 908, DateTimeKind.Local).AddTicks(2710),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SpecialDetails = "detail of first num",
-                            UpdatedDate = new DateTime(2024, 1, 13, 14, 38, 20, 908, DateTimeKind.Local).AddTicks(2711),
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             VillaId = 1,
                             VillaRoom = 100
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2024, 1, 13, 14, 38, 20, 908, DateTimeKind.Local).AddTicks(2713),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SpecialDetails = "detail of second num",
-                            UpdatedDate = new DateTime(2024, 1, 13, 14, 38, 20, 908, DateTimeKind.Local).AddTicks(2714),
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             VillaId = 2,
                             VillaRoom = 200
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2024, 1, 13, 14, 38, 20, 908, DateTimeKind.Local).AddTicks(2715),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SpecialDetails = "detail of third num",
-                            UpdatedDate = new DateTime(2024, 1, 13, 14, 38, 20, 908, DateTimeKind.Local).AddTicks(2716),
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             VillaId = 2,
                             VillaRoom = 300
                         });

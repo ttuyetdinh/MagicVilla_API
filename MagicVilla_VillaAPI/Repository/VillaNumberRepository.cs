@@ -24,7 +24,7 @@ namespace MagicVilla_VillaAPI.Repository
             _db.VillaNumbers.Update(entity);
 
             // can use the method inherit from the Repository<Villa>
-            // because they are reference to the same dbcontext instance
+            // because they are reference to the same dbcontext instance (scoped ApplicationDbContext)
             // await _db.SaveChangesAsync();
             await SaveAsync();
 
