@@ -35,16 +35,16 @@
                 <span asp-validation-for="VillaNumber.SpecialDetails" class="text-danger"></span>
             </div>
 
-            <div class="col-5 offset-2">
+            <div class="col-5 offset-2 pt-4">
+                <button type="submit" value="Create" class="btn btn-success form-control"> Create</button>
+            </div>
+            <div class="col-5 pt-4">
                 <a asp-action="IndexVilla" class="btn-primary btn form-control">Back to List</a>
-            </div> 
-            <div class="col-5">
-                <input type="submit" value="Create" class="btn btn-success form-control" />
             </div>
         </div>
     </div>
 </form>
 
-@section Scripts{
-    <partial name = "_ValidationScriptsPartial"/>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }
