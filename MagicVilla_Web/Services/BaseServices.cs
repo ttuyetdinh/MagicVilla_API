@@ -30,17 +30,42 @@ namespace MagicVilla_Web.Services
                 var client = httpClient.CreateClient("MagicAPI");
 
                 HttpRequestMessage message = new HttpRequestMessage();
-                message.Headers.Add("Accept", "application/json");
+
                 message.RequestUri = new Uri(apiRequest.Url);
-                if (apiRequest.Data != null)
+                if (apiRequest.ContentType == ContentType.MultipartFormData)
                 {
-                    message.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data), Encoding.UTF8, "application/json");
+                    message.Headers.Add("Accept", "*/*");
+                    var content = new MultipartFormDataContent();
+                    foreach (var prop in apiRequest.Data.GetType().GetProperties())
+                    {
+                        var value = prop.GetValue(apiRequest.Data);
+                        if (value is FormFile)
+                        {
+                            var file = (FormFile)value;
+                            if (file != null) content.Add(new StreamContent(file.OpenReadStream()), prop.Name, file.FileName);
+                        }
+                        else
+                        {
+                            content.Add(new StringContent(value == null ? "" : value.ToString()), prop.Name);
+                        }
+                    }
+                    message.Content = content;
+                }
+                else
+                {
+                    message.Headers.Add("Accept", "application/json");
+
+                    if (apiRequest.Data != null)
+                    {
+                        message.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data), Encoding.UTF8, "application/json");
+                    }
                 }
                 message.Method = GetHttpMethod(apiRequest.ApiType);
 
                 // 
-                if(!string.IsNullOrEmpty(apiRequest.Token)){
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",apiRequest.Token);
+                if (!string.IsNullOrEmpty(apiRequest.Token))
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiRequest.Token);
                 }
 
                 HttpResponseMessage apiResponse = await client.SendAsync(message);
@@ -48,9 +73,10 @@ namespace MagicVilla_Web.Services
                 try
                 {
                     APIResponse response = JsonConvert.DeserializeObject<APIResponse>(apiContent);
-                    if( response!=null && (response.StatusCode == System.Net.HttpStatusCode.NotFound 
-                        || response.StatusCode == System.Net.HttpStatusCode.BadRequest)){
-                            response.IsSuccess = false;
+                    if (response != null && (response.StatusCode == System.Net.HttpStatusCode.NotFound
+                        || response.StatusCode == System.Net.HttpStatusCode.BadRequest))
+                    {
+                        response.IsSuccess = false;
                     }
                     var returnObj = JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(response));
 

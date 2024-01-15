@@ -7,17 +7,23 @@
             POST,
             PUT,
             DELETE
-        }
+        };
 
         public enum Role{
             Admin,
             User,
             CustomRole
-        }
+        };
+
+        public enum ContentType {
+            Json,
+            MultipartFormData
+        };
 
         public static string SessionToken = "JWTToken";
         public static string CurrentAPIVersion = "v2";
         
+
         
     }
 
