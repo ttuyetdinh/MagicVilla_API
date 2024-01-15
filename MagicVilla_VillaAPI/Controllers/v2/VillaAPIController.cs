@@ -37,7 +37,7 @@ namespace MagicVilla_VillaAPI.Controllers.v2
         }
 
         [HttpGet]
-        [ResponseCache(CacheProfileName = "Default30sec",VaryByQueryKeys = new[] {"explicitOcuppancy", "search", "PageNum", "PageSize"} )]
+        // [ResponseCache(CacheProfileName = "Default30sec",VaryByQueryKeys = new[] {"explicitOcuppancy", "search", "PageNum", "PageSize"} )]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<APIResponse>> GetVillas([FromQuery(Name = "explicitOcuppancy")] int? ocuppancy, [FromQuery] string? search, [FromQuery] Pagination? pagination)
         {
@@ -159,7 +159,7 @@ namespace MagicVilla_VillaAPI.Controllers.v2
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<APIResponse>> CreateVilla([FromBody] VillaCreateDTO createVillaDTO)
+        public async Task<ActionResult<APIResponse>> CreateVilla([FromForm] VillaCreateDTO createVillaDTO)
         {
             try
             {
@@ -176,6 +176,7 @@ namespace MagicVilla_VillaAPI.Controllers.v2
                 if (createVillaDTO == null)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccess = false;
 
                     return BadRequest(_response);
                     // throw new ArgumentNullException(nameof(createVillaDTO));
@@ -184,6 +185,33 @@ namespace MagicVilla_VillaAPI.Controllers.v2
                 Villa villaData = _mapper.Map<Villa>(createVillaDTO);
 
                 await _dbVilla.CreateAsync(villaData);
+
+                if(createVillaDTO.Image != null){
+                    string fileName = villaData.Id + Path.GetExtension(createVillaDTO.Image.FileName);
+                    string filepath = $@"wwwroot\ProductImage\{fileName}";
+
+                    // absolute path
+                    var directoryLocation = Path.Combine(Directory.GetCurrentDirectory(), filepath);
+
+                    // check if old file is existing to overwriting
+                    FileInfo file = new FileInfo(directoryLocation);
+                    if(file.Exists) file.Delete();
+
+                    // create a new file at the destination and copy content to it 
+                    using(var fileStream = new FileStream(directoryLocation,FileMode.Create)){
+                        createVillaDTO.Image.CopyTo(fileStream);
+                    }
+
+                    // create the url to the API server: https://localhost:7002 
+                    var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
+                    villaData.ImageUrl = $"{baseUrl}/ProductImage/{fileName}";
+                    villaData.ImageLocalPath = filepath;
+                }
+                else{
+                    villaData.ImageUrl = "https://placehold.co/600x400";
+                }
+
+                await _dbVilla.UpdateAsync(villaData);
 
                 _response.Result = _mapper.Map<VillaDTO>(villaData);
                 _response.StatusCode = HttpStatusCode.Created;
