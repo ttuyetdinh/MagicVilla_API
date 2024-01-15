@@ -24,7 +24,7 @@ namespace MagicVilla_VillaAPI.Model.DTO
         public string? Amenity { get; set; }
 
         public string? ImageUrl { get; set; }
-        
+        public IFormFile? Image { get; set; }
         public int? Age { get; set; }
     }
 }
