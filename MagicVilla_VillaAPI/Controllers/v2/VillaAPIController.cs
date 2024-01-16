@@ -334,7 +334,7 @@ namespace MagicVilla_VillaAPI.Controllers.v2
                 }
                 else
                 {
-                    villaData.ImageUrl = "https://placehold.co/600x400";
+                    if (villaData.ImageUrl == null) villaData.ImageUrl = "https://placehold.co/600x400";
                 }
 
                 await _dbVilla.UpdateAsync(villaData);

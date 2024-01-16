@@ -65,8 +65,7 @@
                     </div>
                     <div class="col-10">
                         <input asp-for="Image" class="form-control" />
-                        @* reserve here for online image *@
-                        @* <input asp-for="ImageUrl" class="form-control" /> *@
+                        <input asp-for="ImageUrl" hidden class="form-control" />
                         <span asp-validation-for="Image" class="text-danger"></span>
                     </div>
 
