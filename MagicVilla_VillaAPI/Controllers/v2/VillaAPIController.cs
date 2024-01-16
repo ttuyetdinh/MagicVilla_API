@@ -186,7 +186,8 @@ namespace MagicVilla_VillaAPI.Controllers.v2
 
                 await _dbVilla.CreateAsync(villaData);
 
-                if(createVillaDTO.Image != null){
+                if (createVillaDTO.Image != null)
+                {
                     string fileName = villaData.Id + Path.GetExtension(createVillaDTO.Image.FileName);
                     string filepath = $@"wwwroot\ProductImage\{fileName}";
 
@@ -195,10 +196,11 @@ namespace MagicVilla_VillaAPI.Controllers.v2
 
                     // check if old file is existing to overwriting
                     FileInfo file = new FileInfo(directoryLocation);
-                    if(file.Exists) file.Delete();
+                    if (file.Exists) file.Delete();
 
                     // create a new file at the destination and copy content to it 
-                    using(var fileStream = new FileStream(directoryLocation,FileMode.Create)){
+                    using (var fileStream = new FileStream(directoryLocation, FileMode.Create))
+                    {
                         createVillaDTO.Image.CopyTo(fileStream);
                     }
 
@@ -207,7 +209,8 @@ namespace MagicVilla_VillaAPI.Controllers.v2
                     villaData.ImageUrl = $"{baseUrl}/ProductImage/{fileName}";
                     villaData.ImageLocalPath = filepath;
                 }
-                else{
+                else
+                {
                     villaData.ImageUrl = "https://placehold.co/600x400";
                 }
 
@@ -251,8 +254,17 @@ namespace MagicVilla_VillaAPI.Controllers.v2
                 if (villa == null)
                 {
                     _response.StatusCode = HttpStatusCode.NotFound;
-
+                    _response.IsSuccess = false;
                     return NotFound(_response);
+                }
+
+                // check if old file exsit to delete the old file in local storage
+                if (!string.IsNullOrEmpty(villa.ImageLocalPath))
+                {
+                    var oldFilePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), villa.ImageLocalPath);
+                    FileInfo fileInfo = new FileInfo(oldFilePathDirectory);
+
+                    if (fileInfo.Exists) fileInfo.Delete();
                 }
 
                 await _dbVilla.RemoveAsync(villa);
@@ -277,7 +289,8 @@ namespace MagicVilla_VillaAPI.Controllers.v2
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<APIResponse>> UpdateVilla(int id, [FromBody] VillaUpdateDTO updateVillaDTO)
+        // "id" is defined in the route template( HttpPut("{id:int}")) so don't need to use [FromRoute]
+        public async Task<ActionResult<APIResponse>> UpdateVilla(int id, [FromForm] VillaUpdateDTO updateVillaDTO)
         {
             try
             {
@@ -287,7 +300,42 @@ namespace MagicVilla_VillaAPI.Controllers.v2
                 }
 
                 Villa villaData = await _dbVilla.GetAsync(i => i.Id == id);
-                villaData = _mapper.Map(updateVillaDTO, villaData);
+                // no need to assign the _mapper.Map to the villaData
+                _mapper.Map(updateVillaDTO, villaData);
+
+                if (updateVillaDTO.Image != null)
+                {
+
+                    // check if old file exsit to delete the old file
+                    if (!string.IsNullOrEmpty(villaData.ImageLocalPath))
+                    {
+                        var oldFilePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), villaData.ImageLocalPath);
+                        FileInfo fileInfo = new FileInfo(oldFilePathDirectory);
+
+                        if (fileInfo.Exists) fileInfo.Delete();
+                    }
+
+                    string fileName = villaData.Id + Path.GetExtension(updateVillaDTO.Image.FileName);
+                    string filepath = $@"wwwroot\ProductImage\{fileName}";
+
+                    // absolute path
+                    var directoryLocation = Path.Combine(Directory.GetCurrentDirectory(), filepath);
+
+                    // create a new file at the destination and copy content to it 
+                    using (var fileStream = new FileStream(directoryLocation, FileMode.Create))
+                    {
+                        updateVillaDTO.Image.CopyTo(fileStream);
+                    }
+
+                    // create the url to the API server: https://localhost:7002 
+                    var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
+                    villaData.ImageUrl = $"{baseUrl}/ProductImage/{fileName}";
+                    villaData.ImageLocalPath = filepath;
+                }
+                else
+                {
+                    villaData.ImageUrl = "https://placehold.co/600x400";
+                }
 
                 await _dbVilla.UpdateAsync(villaData);
 
