@@ -36,9 +36,9 @@ namespace MagicVilla_VillaAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO model)
         {
-            var loginResponse = await _dbUser.Login(model);
+            var tokenDto = await _dbUser.Login(model);
 
-            if (loginResponse.ApplicationUser == null || loginResponse.Token == "")
+            if (tokenDto == null || tokenDto.Token == "")
             {
                 return BadRequest(new APIResponse
                 {
@@ -52,7 +52,7 @@ namespace MagicVilla_VillaAPI.Controllers
             {
                 IsSuccess = true,
                 StatusCode = System.Net.HttpStatusCode.OK,
-                Result = loginResponse
+                Result = tokenDto
             });
         }
 

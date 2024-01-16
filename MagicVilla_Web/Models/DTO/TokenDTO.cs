@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace MagicVilla_Web.Models.DTO
 {
-    public class LoginResponseDTO
+    public class TokenDTO
     {
-        public LocalUserDTO? localUser { get; set; }
         public string? Token { get; set; }
     }
 }

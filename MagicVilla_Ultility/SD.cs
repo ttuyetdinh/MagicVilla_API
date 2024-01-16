@@ -20,7 +20,7 @@
             MultipartFormData
         };
 
-        public static string SessionToken = "JWTToken";
+        public static string AccessToken = "JWTToken";
         public static string CurrentAPIVersion = "v2";
         
 

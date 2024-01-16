@@ -25,9 +25,9 @@ namespace MagicVilla_Web.Controllers
         public async Task<IActionResult> Index()
         {
             List<VillaDTO> list = new();
-            var sessionToken = HttpContext.Session.GetString(SD.SessionToken);
+            var AccessToken = HttpContext.Session.GetString(SD.AccessToken);
 
-            var response = await _villaServices.GetAllAsync<APIResponse>(sessionToken);
+            var response = await _villaServices.GetAllAsync<APIResponse>(AccessToken);
             if (response != null && response.IsSuccess)
             {
                 list = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(response.Result));
