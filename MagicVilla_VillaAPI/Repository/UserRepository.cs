@@ -53,7 +53,7 @@ namespace MagicVilla_VillaAPI.Repository
             bool isValid = await _userManager.CheckPasswordAsync(user, loginRequest.Password);
             if (user == null || isValid == false) return new TokenDTO
             {
-                Token = ""
+                AccessToken = ""
             };
 
             // generate JWT token if user is found
@@ -77,7 +77,7 @@ namespace MagicVilla_VillaAPI.Repository
 
             TokenDTO tokenDtoDTO = new()
             {
-                Token = tokenHandler.WriteToken(token)
+                AccessToken = tokenHandler.WriteToken(token)
                 // Role = roles.FirstOrDefault()
             };
 
