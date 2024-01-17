@@ -51,11 +51,69 @@ namespace MagicVilla_VillaAPI.Repository
             var user = _db.ApplicationUsers.FirstOrDefault(u => u.UserName == loginRequest.UserName);
 
             bool isValid = await _userManager.CheckPasswordAsync(user, loginRequest.Password);
+
             if (user == null || isValid == false) return new TokenDTO
             {
                 AccessToken = ""
             };
 
+            TokenDTO tokenDtoDTO = new()
+            {
+                AccessToken = await GetAccessToken(user)
+            };
+
+            return tokenDtoDTO;
+        }
+
+        public async Task<UserDTO> Register(RegisterationRequestDTO registerationRequestDTO)
+        {
+            var newUser = new ApplicationUser()
+            {
+                UserName = registerationRequestDTO.UserName,
+                Email = registerationRequestDTO.UserName,
+                NormalizedEmail = registerationRequestDTO.UserName,
+                Name = registerationRequestDTO.Name
+
+            };
+
+            try
+            {
+                var result = await _userManager.CreateAsync(newUser, registerationRequestDTO.Password);
+                if (result.Succeeded)
+                {
+                    if (!await _roleManager.RoleExistsAsync(GetRole(registerationRequestDTO.Role)))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(GetRole(registerationRequestDTO.Role)));
+                    }
+                    await _userManager.AddToRoleAsync(newUser, GetRole(registerationRequestDTO.Role));
+                    var userToReturn = _db.ApplicationUsers.FirstOrDefault(u => u.UserName == registerationRequestDTO.UserName);
+
+                    return _mapper.Map<UserDTO>(newUser);
+
+                }
+            }
+            catch (Exception e)
+            {
+                
+            }
+
+            return new UserDTO();
+        }
+
+        // ultilities
+        private string GetRole(Role? role)
+        {
+            return role switch
+            {
+                Role.Admin => Role.Admin.ToString(),
+                Role.User => Role.User.ToString(),
+                Role.CustomRole => Role.CustomRole.ToString(),
+                _ => Role.Admin.ToString()
+            };
+        }
+
+        private async Task<string> GetAccessToken(ApplicationUser user)
+        {
             // generate JWT token if user is found
             var roles = await _userManager.GetRolesAsync(user);
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -75,60 +133,7 @@ namespace MagicVilla_VillaAPI.Repository
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            TokenDTO tokenDtoDTO = new()
-            {
-                AccessToken = tokenHandler.WriteToken(token)
-                // Role = roles.FirstOrDefault()
-            };
-
-            return tokenDtoDTO;
-
-        }
-
-        public async Task<UserDTO> Register(RegisterationRequestDTO registerationRequestDTO)
-        {
-            var newUser = new ApplicationUser()
-            {
-                UserName = registerationRequestDTO.UserName,
-                Email = registerationRequestDTO.UserName,
-                NormalizedEmail = registerationRequestDTO.UserName,
-                Name = registerationRequestDTO.Name
-
-            };
-
-            try
-            {
-                var result = await _userManager.CreateAsync(newUser, registerationRequestDTO.Password);
-                if (result.Succeeded)
-                {
-                    if(! await _roleManager.RoleExistsAsync(GetRole(registerationRequestDTO.Role))   ){
-                        await _roleManager.CreateAsync(new IdentityRole(GetRole(registerationRequestDTO.Role)));
-                    }
-                    await _userManager.AddToRoleAsync(newUser, GetRole(registerationRequestDTO.Role));
-                    var userToReturn = _db.ApplicationUsers.FirstOrDefault(u => u.UserName == registerationRequestDTO.UserName);
-
-                    return _mapper.Map<UserDTO>(newUser);
-
-                }
-            }
-            catch (Exception e)
-            {
-
-            }
-
-            return new UserDTO();
-        }
-
-        // ultilities
-        private string GetRole(Role? role)
-        {
-            return role switch
-            {
-                Role.Admin => Role.Admin.ToString(),
-                Role.User => Role.User.ToString(),
-                Role.CustomRole => Role.CustomRole.ToString(),
-                _ => Role.Admin.ToString()
-            };
+            return tokenHandler.WriteToken(token);
         }
     }
 }
