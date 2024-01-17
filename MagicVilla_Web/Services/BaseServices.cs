@@ -17,21 +17,26 @@ namespace MagicVilla_Web.Services
     {
         public APIResponse responseModel { get; set; }
         public IHttpClientFactory httpClient { get; set; }
-        public BaseServices(IHttpClientFactory httpClient)
+
+        private readonly ITokenProvider _tokenProvider;
+        public BaseServices(IHttpClientFactory httpClient, ITokenProvider tokenProvider)
         {
             responseModel = new APIResponse();
             this.httpClient = httpClient;
+            _tokenProvider = tokenProvider;
         }
 
-        public async Task<T> SendAsync<T>(APIRequest apiRequest)
+        public async Task<T> SendAsync<T>(APIRequest apiRequest, bool withBearer = true)
         {
             try
             {
                 var client = httpClient.CreateClient("MagicAPI");
 
-                HttpRequestMessage message = new HttpRequestMessage();
+                HttpRequestMessage message = new HttpRequestMessage
+                {
+                    RequestUri = new Uri(apiRequest.Url)
+                };
 
-                message.RequestUri = new Uri(apiRequest.Url);
                 if (apiRequest.ContentType == ContentType.MultipartFormData)
                 {
                     message.Headers.Add("Accept", "*/*");
@@ -62,10 +67,11 @@ namespace MagicVilla_Web.Services
                 }
                 message.Method = GetHttpMethod(apiRequest.ApiType);
 
-                // 
-                if (!string.IsNullOrEmpty(apiRequest.Token))
+                // get JWT token from the cookie
+                if (withBearer == true && _tokenProvider.GetToken() != null)
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiRequest.Token);
+                    var token = _tokenProvider.GetToken();
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
                 }
 
                 HttpResponseMessage apiResponse = await client.SendAsync(message);

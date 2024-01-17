@@ -15,6 +15,7 @@ namespace MagicVilla_Web
 
             builder.Services.AddAutoMapper(typeof(MappingConfig));
             
+            // .AddHttpClient binding a IHttpClientFactory for a type
             builder.Services.AddHttpClient<IVillaServices, VillaServices>();
             builder.Services.AddScoped<IVillaServices, VillaServices>();
 
@@ -23,6 +24,9 @@ namespace MagicVilla_Web
             
             builder.Services.AddHttpClient<IAuthService, AuthService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
+
+            builder.Services.AddScoped<ITokenProvider, TokenProvider>();
+            builder.Services.AddScoped<IBaseServices, BaseServices>();
 
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

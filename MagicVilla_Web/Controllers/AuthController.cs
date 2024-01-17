@@ -26,13 +26,14 @@ namespace MagicVilla_Web.Controllers
     {
         private readonly ILogger<AuthController> _logger;
         private readonly IAuthService _authServices;
-        // private readonly ITokenProvider _tokenProvider;
+        private readonly ITokenProvider _tokenProvider;
         private readonly IMapper _mapper;
 
-        public AuthController(ILogger<AuthController> logger, IAuthService authServices, IMapper mapper)
+        public AuthController(ILogger<AuthController> logger, IAuthService authServices, ITokenProvider tokenProvider, IMapper mapper)
         {
             _logger = logger;
             _authServices = authServices;
+            _tokenProvider = tokenProvider;
             _mapper = mapper;
         }
 
@@ -50,20 +51,20 @@ namespace MagicVilla_Web.Controllers
             var response = await _authServices.LoginAsync<APIResponse>(obj);
             if (response != null && response.IsSuccess)
             {
-                var model = JsonConvert.DeserializeObject<TokenDTO>(Convert.ToString(response.Result));
+                var tokenDTO = JsonConvert.DeserializeObject<TokenDTO>(Convert.ToString(response.Result));
 
-                var handler = new JwtSecurityTokenHandler();    
-                var jwt = handler.ReadJwtToken(model.AccessToken);
+                var handler = new JwtSecurityTokenHandler();
+                var jwt = handler.ReadJwtToken(tokenDTO.AccessToken);
 
                 var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-                identity.AddClaim( new Claim(ClaimTypes.Name, jwt.Claims.FirstOrDefault(u=>u.Type == "unique_name").Value));
-                identity.AddClaim( new Claim(ClaimTypes.Role, jwt.Claims.FirstOrDefault(u=>u.Type == "role").Value));
-                
-                var principal = new ClaimsPrincipal(identity);
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal); 
+                identity.AddClaim(new Claim(ClaimTypes.Name, jwt.Claims.FirstOrDefault(u => u.Type == "unique_name").Value));
+                identity.AddClaim(new Claim(ClaimTypes.Role, jwt.Claims.FirstOrDefault(u => u.Type == "role").Value));
 
-                HttpContext.Session.SetString(SD.AccessToken, model.AccessToken);
-                
+                var principal = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                _tokenProvider.SetToken(tokenDTO);
+
                 return RedirectToAction("Index", "Home");
             }
 
@@ -75,14 +76,16 @@ namespace MagicVilla_Web.Controllers
         public IActionResult Register()
         {
             RegisterationRequestDTO obj = new RegisterationRequestDTO(
-            ){
+            )
+            {
                 // Name="hello from here",
                 // UserName ="hi"
             };
-            
+
             var roleList = new List<SelectListItem>();
-            foreach(var role in Enum.GetValues(typeof(Role))){
-                roleList.Add(new SelectListItem(){Text = role.ToString(), Value = role.ToString()});
+            foreach (var role in Enum.GetValues(typeof(Role)))
+            {
+                roleList.Add(new SelectListItem() { Text = role.ToString(), Value = role.ToString() });
             }
             ViewBag.RoleList = roleList;
             return View(obj);
@@ -91,15 +94,16 @@ namespace MagicVilla_Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterationRequestDTO obj)
-        {   
+        {
             obj.Role = obj.Role == null ? Role.User : obj.Role;
             var result = await _authServices.RegisterAsync<APIResponse>(obj);
 
             if (result != null && result.IsSuccess) return RedirectToAction("login");
 
             var roleList = new List<SelectListItem>();
-            foreach(var role in Enum.GetValues(typeof(Role))){
-                roleList.Add(new SelectListItem(){Text = role.ToString(), Value = role.ToString()});
+            foreach (var role in Enum.GetValues(typeof(Role)))
+            {
+                roleList.Add(new SelectListItem() { Text = role.ToString(), Value = role.ToString() });
             }
             ViewBag.RoleList = roleList;
 
@@ -109,7 +113,7 @@ namespace MagicVilla_Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
-            HttpContext.Session.SetString(SD.AccessToken, "");
+            _tokenProvider.ClearToken();
 
             return RedirectToAction("Index", "Home");
         }

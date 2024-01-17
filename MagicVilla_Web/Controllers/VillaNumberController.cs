@@ -35,7 +35,7 @@ namespace MagicVilla_Web.Controllers
         {
             List<VillaNumberDTO>? list = new();
             var AccessToken = HttpContext.Session.GetString(SD.AccessToken);
-            var response = await _villaNumberServices.GetAllAsync<APIResponse>(AccessToken);
+            var response = await _villaNumberServices.GetAllAsync<APIResponse>();
             if (response != null && response.IsSuccess)
             {
                 list = JsonConvert.DeserializeObject<List<VillaNumberDTO>>(Convert.ToString(response.Result));
@@ -50,7 +50,7 @@ namespace MagicVilla_Web.Controllers
         {
             VillaNumberCreateVM villaNumberVM = new VillaNumberCreateVM();
             var AccessToken = HttpContext.Session.GetString(SD.AccessToken);
-            var response = await _villaServices.GetAllAsync<APIResponse>(AccessToken);
+            var response = await _villaServices.GetAllAsync<APIResponse>();
             try
             {
                 if (response != null && response.IsSuccess)
@@ -80,7 +80,7 @@ namespace MagicVilla_Web.Controllers
             var AccessToken = HttpContext.Session.GetString(SD.AccessToken);
             if (ModelState.IsValid)
             {
-                var response = await _villaNumberServices.CreateAsync<APIResponse>(model.VillaNumber, AccessToken);
+                var response = await _villaNumberServices.CreateAsync<APIResponse>(model.VillaNumber);
                 if (response != null && response.IsSuccess)
                 {
                     return RedirectToAction(nameof(IndexVillaNumber));
@@ -96,7 +96,7 @@ namespace MagicVilla_Web.Controllers
 
             // Repopulates the villaList again
 
-            var res = await _villaServices.GetAllAsync<APIResponse>(AccessToken);
+            var res = await _villaServices.GetAllAsync<APIResponse>();
             if (res != null && res.IsSuccess)
             {
                 model.VillaList = JsonConvert
@@ -116,7 +116,7 @@ namespace MagicVilla_Web.Controllers
         {
             var villaNumberVM = new VillaNumberUpdateVM();
             var AccessToken = HttpContext.Session.GetString(SD.AccessToken);
-            var response = await _villaNumberServices.GetAsync<APIResponse>(Id, AccessToken);
+            var response = await _villaNumberServices.GetAsync<APIResponse>(Id);
             if (response == null || response.IsSuccess == false) return NotFound();
 
             VillaNumberDTO villaNumberDTO = JsonConvert
@@ -124,7 +124,7 @@ namespace MagicVilla_Web.Controllers
             villaNumberVM.VillaNumber = _mapper.Map<VillaNumberUpdateDTO>(villaNumberDTO);
 
 
-            response = await _villaServices.GetAllAsync<APIResponse>(AccessToken);
+            response = await _villaServices.GetAllAsync<APIResponse>();
             try
             {
                 if (response != null && response.IsSuccess)
@@ -154,7 +154,7 @@ namespace MagicVilla_Web.Controllers
             var AccessToken = HttpContext.Session.GetString(SD.AccessToken);
             if (ModelState.IsValid)
             {
-                var response = await _villaNumberServices.UpdateAsync<APIResponse>(model.VillaNumber, AccessToken);
+                var response = await _villaNumberServices.UpdateAsync<APIResponse>(model.VillaNumber);
                 if (response != null && response.IsSuccess)
                 {
                     return RedirectToAction(nameof(IndexVillaNumber));
@@ -169,7 +169,7 @@ namespace MagicVilla_Web.Controllers
             }
 
             // Repopulates the villaList again
-            var res = await _villaServices.GetAllAsync<APIResponse>(AccessToken);
+            var res = await _villaServices.GetAllAsync<APIResponse>();
             if (res != null && res.IsSuccess)
             {
                 model.VillaList = JsonConvert
@@ -192,7 +192,7 @@ namespace MagicVilla_Web.Controllers
             if (ModelState.IsValid)
             {
                 var AccessToken = HttpContext.Session.GetString(SD.AccessToken);
-                var response = await _villaNumberServices.DeleteAsync<APIResponse>(Id, AccessToken);
+                var response = await _villaNumberServices.DeleteAsync<APIResponse>(Id);
                 if (response != null && response.IsSuccess)
                 {
                     return RedirectToAction(nameof(IndexVillaNumber));
