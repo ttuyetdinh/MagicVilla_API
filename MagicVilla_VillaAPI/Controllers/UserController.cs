@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Net;
 using AutoMapper;
 using MagicVilla_VillaAPI.Controllers.v1;
 using MagicVilla_VillaAPI.Model;
 using MagicVilla_VillaAPI.Model.DTO;
 using MagicVilla_VillaAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace MagicVilla_VillaAPI.Controllers
 {
@@ -43,7 +38,7 @@ namespace MagicVilla_VillaAPI.Controllers
                 return BadRequest(new APIResponse
                 {
                     IsSuccess = false,
-                    StatusCode = System.Net.HttpStatusCode.BadRequest,
+                    StatusCode = HttpStatusCode.BadRequest,
                     ErrorMessage = new List<string>() { "Username or password is incorrect" }
                 });
             }
@@ -51,7 +46,7 @@ namespace MagicVilla_VillaAPI.Controllers
             return Ok(new APIResponse
             {
                 IsSuccess = true,
-                StatusCode = System.Net.HttpStatusCode.OK,
+                StatusCode = HttpStatusCode.OK,
                 Result = tokenDto
             });
         }
@@ -66,16 +61,16 @@ namespace MagicVilla_VillaAPI.Controllers
             if (!isUnique) return BadRequest(new APIResponse
             {
                 IsSuccess = false,
-                StatusCode = System.Net.HttpStatusCode.BadRequest,
+                StatusCode = HttpStatusCode.BadRequest,
                 ErrorMessage = new List<string>() { "Username already exist" }
             });
 
             var user = await _dbUser.Register(model);
 
-            if(user == null) return BadRequest(new APIResponse
+            if (user == null) return BadRequest(new APIResponse
             {
                 IsSuccess = false,
-                StatusCode = System.Net.HttpStatusCode.BadRequest,
+                StatusCode = HttpStatusCode.BadRequest,
                 ErrorMessage = new List<string>() { "Error while registering" }
             });
 
@@ -83,8 +78,39 @@ namespace MagicVilla_VillaAPI.Controllers
             return Ok(new APIResponse
             {
                 IsSuccess = true,
-                StatusCode = System.Net.HttpStatusCode.OK,
+                StatusCode = HttpStatusCode.OK,
             });
+        }
+
+        [HttpPost("refresh")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetNewTokenFromRefreshToken([FromBody] TokenDTO tokenDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                var tokenDTOResponse = await _dbUser.RefreshAccessToken(tokenDTO);
+                if (tokenDTOResponse == null || string.IsNullOrEmpty(tokenDTOResponse.AccessToken))
+                {
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.ErrorMessage = new List<string>() { "Token invalid" };
+                    
+                    return BadRequest(_response);
+                }
+                _response.IsSuccess = true;
+                _response.StatusCode = HttpStatusCode.OK;
+                _response.Result = tokenDTOResponse;
+
+                return Ok(_response);
+            }
+            else
+            {
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                _response.Result = "Invalid input";
+                return BadRequest(_response);
+            }
         }
     }
 }
