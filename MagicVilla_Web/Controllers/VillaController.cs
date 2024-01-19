@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using AutoMapper;
 using MagicVilla_Ultility;
@@ -59,10 +60,16 @@ namespace MagicVilla_Web.Controllers
                 var response = await _villaServices.CreateAsync<APIResponse>(model);
                 if (response != null && response.IsSuccess)
                 {
+                    ViewData["message"] = "Success to create villa";
                     return RedirectToAction(nameof(IndexVilla));
                 }
+                else
+                {
+                    TempData["message"] = (response.ErrorMessage != null && response.ErrorMessage.Count > 0)
+                    ? response.ErrorMessage[0]
+                    : "Fail to create villa";
+                }
             }
-
             return View(model);
         }
 
@@ -77,7 +84,6 @@ namespace MagicVilla_Web.Controllers
 
                 return View(_mapper.Map<VillaUpdateDTO>(model));
             }
-
             return NotFound();
         }
 
@@ -92,7 +98,14 @@ namespace MagicVilla_Web.Controllers
                 var response = await _villaServices.UpdateAsync<APIResponse>(model);
                 if (response != null && response.IsSuccess)
                 {
+                    TempData["message"] = "Success to update villa";
                     return RedirectToAction(nameof(IndexVilla));
+                }
+                else
+                {
+                    TempData["message"] = (response.ErrorMessage != null && response.ErrorMessage.Count > 0)
+                    ? response.ErrorMessage[0]
+                    : "Fail to update villa";
                 }
             }
 
@@ -111,6 +124,12 @@ namespace MagicVilla_Web.Controllers
                 if (response != null && response.IsSuccess)
                 {
                     return RedirectToAction(nameof(IndexVilla));
+                }
+                  else
+                {
+                    TempData["message"] = (response.ErrorMessage != null && response.ErrorMessage.Count > 0)
+                    ? response.ErrorMessage[0]
+                    : "Fail to delete villa";
                 }
             }
 

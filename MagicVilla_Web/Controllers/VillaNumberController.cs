@@ -87,10 +87,9 @@ namespace MagicVilla_Web.Controllers
                 }
                 else
                 {
-                    if (response.ErrorMessage.Count > 0)
-                    {
-                        ModelState.AddModelError("ErrorMessage", response.ErrorMessage.FirstOrDefault());
-                    }
+                    TempData["message"] = (response.ErrorMessage != null && response.ErrorMessage.Count > 0)
+                    ? response.ErrorMessage[0]
+                    : "Fail to create villa number";
                 }
             }
 
@@ -137,6 +136,12 @@ namespace MagicVilla_Web.Controllers
                             Value = i.Id.ToString()
                         });
                 }
+                else
+                {
+                    TempData["message"] = (response.ErrorMessage != null && response.ErrorMessage.Count > 0)
+                    ? response.ErrorMessage[0]
+                    : "Fail to retrieve villa number";
+                }
             }
             catch (Exception e)
             {
@@ -161,10 +166,9 @@ namespace MagicVilla_Web.Controllers
                 }
                 else
                 {
-                    if (response.ErrorMessage.Count > 0)
-                    {
-                        ModelState.AddModelError("ErrorMessage", response.ErrorMessage.FirstOrDefault());
-                    }
+                    TempData["message"] = (response.ErrorMessage != null && response.ErrorMessage.Count > 0)
+                    ? response.ErrorMessage[0]
+                    : "Fail to update villa number";
                 }
             }
 
@@ -189,14 +193,20 @@ namespace MagicVilla_Web.Controllers
         [Authorize(Roles = nameof(SD.Role.Admin))]
         public async Task<IActionResult> DeleteVillaNumber(int Id)
         {
-            if (ModelState.IsValid)
+            var AccessToken = HttpContext.Session.GetString(SD.AccessToken);
+            var response = await _villaNumberServices.DeleteAsync<APIResponse>(Id);
+
+
+            if (response != null && response.IsSuccess)
             {
-                var AccessToken = HttpContext.Session.GetString(SD.AccessToken);
-                var response = await _villaNumberServices.DeleteAsync<APIResponse>(Id);
-                if (response != null && response.IsSuccess)
-                {
-                    return RedirectToAction(nameof(IndexVillaNumber));
-                }
+                return RedirectToAction(nameof(IndexVillaNumber));
+            }
+
+            else
+            {
+                TempData["message"] = (response.ErrorMessage != null && response.ErrorMessage.Count > 0)
+                ? response.ErrorMessage[0]
+                : "Fail to delete villa number";
             }
 
             return View();

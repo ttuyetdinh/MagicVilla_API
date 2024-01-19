@@ -85,6 +85,10 @@
     </div>
 
     <footer class="border-top footer text-muted">
+        <div id="myPopup" class="alert alert-primary" style="display: none;">
+        
+        </div>
+
         <div class="container">
             &copy; 2023 - MagicVilla_Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
@@ -92,6 +96,24 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        window.onload = function () {
+        @if (TempData["message"] != null)
+        {
+            <text>
+                setTimeout(function() {
+                    var popup =  document.getElementById('myPopup');
+                    popup.textContent = '@TempData["message"]';
+                    popup.style.display = 'block';
+
+                setTimeout(function() {
+                    document.getElementById('myPopup').style.display = 'none';
+                        }, 2000); // 3000 milliseconds = 3 seconds
+                    }, 0);
+            </text>
+        }
+            }
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 
