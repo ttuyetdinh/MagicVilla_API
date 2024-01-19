@@ -26,7 +26,7 @@ namespace MagicVilla_Web.Services
             try
             {
                 bool hasAccessToken = _contextAccessor.HttpContext.Request.Cookies.TryGetValue(SD.AccessToken, out string? accessToken);
-                bool hasRefreshToken = _contextAccessor.HttpContext.Request.Cookies.TryGetValue(SD.AccessToken, out string? refreshToken);
+                bool hasRefreshToken = _contextAccessor.HttpContext.Request.Cookies.TryGetValue(SD.RefreshToken, out string? refreshToken);
                 
                 var tokenDto = new TokenDTO()
                 {

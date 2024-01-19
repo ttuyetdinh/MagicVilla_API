@@ -70,7 +70,8 @@ builder.Services
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("APISettings:SecretKey"))),
             ValidateIssuer = false,
-            ValidateAudience = false
+            ValidateAudience = false,
+            ClockSkew = TimeSpan.Zero
         };
     });
 

@@ -1,3 +1,4 @@
+using MagicVilla_Web.Extension;
 using MagicVilla_Web.Services;
 using MagicVilla_Web.Services.IServices;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -11,17 +12,18 @@ namespace MagicVilla_Web
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            // add a filter to controller to catch custom exception
+            builder.Services.AddControllersWithViews(u => u.Filters.Add(new AuthExceptionRedirection()));
 
             builder.Services.AddAutoMapper(typeof(MappingConfig));
-            
+
             // .AddHttpClient binding a IHttpClientFactory for a type
             builder.Services.AddHttpClient<IVillaServices, VillaServices>();
             builder.Services.AddScoped<IVillaServices, VillaServices>();
 
             builder.Services.AddHttpClient<IVillaNumberServices, VillaNumberServices>();
             builder.Services.AddScoped<IVillaNumberServices, VillaNumberServices>();
-            
+
             builder.Services.AddHttpClient<IAuthService, AuthService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
 
@@ -33,7 +35,8 @@ namespace MagicVilla_Web
             // add authentication
             builder.Services
                 .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options => {
+                .AddCookie(options =>
+                {
                     options.Cookie.HttpOnly = true;
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
                     options.SlidingExpiration = true;
@@ -43,7 +46,8 @@ namespace MagicVilla_Web
                 });
 
             // add session
-            builder.Services.AddSession(options => {
+            builder.Services.AddSession(options =>
+            {
                 options.IdleTimeout = TimeSpan.FromMinutes(10);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;

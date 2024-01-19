@@ -104,9 +104,9 @@ namespace MagicVilla_VillaAPI.Repository
             var existingRefreshToken = _db.RefreshTokens.FirstOrDefault(u => u.Refresh_Token == tokenDTO.RefreshToken);
             if (existingRefreshToken == null) return new TokenDTO();
 
-            // Compare data from existing refresh,access token provided. If there is mismatch => fraud
+            // Compare reveived data with existing refresh,access token provided. If there is mismatch => fraud
             var accessTokenData = GetAccessTokenData(tokenDTO.AccessToken);
-            if (accessTokenData.isSuccessful == null
+            if (accessTokenData.isSuccessful == false
                 || accessTokenData.tokenId != existingRefreshToken.JwtTokenId
                 || accessTokenData.userId != existingRefreshToken.UserId)
             {
@@ -198,7 +198,7 @@ namespace MagicVilla_VillaAPI.Repository
                 UserId = userId,
                 JwtTokenId = tokenId,
                 IsValid = true,
-                ExpriesAt = DateTime.Now.AddDays(30),
+                ExpriesAt = DateTime.Now.AddMinutes(2),
                 Refresh_Token = $"{Guid.NewGuid()}-{Guid.NewGuid()}"
             };
 
