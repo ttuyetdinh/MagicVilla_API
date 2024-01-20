@@ -112,6 +112,10 @@ namespace MagicVilla_Web.Controllers
 
         public async Task<IActionResult> Logout()
         {
+            var token = _tokenProvider.GetToken();
+            // set the refresh token chain of specific sesison to false
+            await _authServices.LogoutAsync<APIResponse>(token);
+            // sign out of from mvc middleware
             await HttpContext.SignOutAsync();
             _tokenProvider.ClearToken();
 

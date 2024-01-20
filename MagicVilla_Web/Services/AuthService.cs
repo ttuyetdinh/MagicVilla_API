@@ -41,5 +41,16 @@ namespace MagicVilla_Web.Services
 
             }, withBearer: false);
         }
+
+        public async Task<T> LogoutAsync<T>(TokenDTO tokenDTO)
+        {
+            return await _baseServices.SendAsync<T>(new APIRequest()
+            {
+                ApiType = SD.ApiType.POST,
+                Data = tokenDTO,
+                Url = $"{villaUrl}/api/{SD.CurrentAPIVersion}/UsersAuth/revoke"
+
+            }, withBearer: true);
+        }
     }
 }

@@ -144,7 +144,17 @@ namespace MagicVilla_VillaAPI.Repository
                 RefreshToken = newRefreshToken
             };
         }
+        public async Task RevokeRefreshToken(TokenDTO tokenDTO)
+        {
+            var existingRefreshToken = await _db.RefreshTokens.FirstOrDefaultAsync(u => u.Refresh_Token == tokenDTO.RefreshToken);
 
+            if (existingRefreshToken == null) return;
+
+            bool isTokenValid = GetAccessTokenData(tokenDTO.AccessToken, existingRefreshToken.UserId, existingRefreshToken.JwtTokenId);
+            if (!isTokenValid) return;
+
+            await MarkAllTokensAsInValid(existingRefreshToken.UserId, existingRefreshToken.JwtTokenId);
+        }
 
         // =================== ultilities =================
         private string GetRole(Role? role)
@@ -209,7 +219,7 @@ namespace MagicVilla_VillaAPI.Repository
                 var jwtTokenId = jwt.Claims.FirstOrDefault(i => i.Type == JwtRegisteredClaimNames.Jti).Value;
                 var userId = jwt.Claims.FirstOrDefault(i => i.Type == JwtRegisteredClaimNames.Sub).Value;
 
-                return userId == expectedTokenId && jwtTokenId == expectedTokenId;
+                return userId == expectedUserId && jwtTokenId == expectedTokenId;
             }
             catch (Exception)
             {
