@@ -105,31 +105,24 @@ namespace MagicVilla_VillaAPI.Repository
             if (existingRefreshToken == null) return new TokenDTO();
 
             // Compare reveived data with existing refresh,access token provided. If there is mismatch => fraud
-            var accessTokenData = GetAccessTokenData(tokenDTO.AccessToken);
-            if (accessTokenData.isSuccessful == false
-                || accessTokenData.tokenId != existingRefreshToken.JwtTokenId
-                || accessTokenData.userId != existingRefreshToken.UserId)
+            bool isTokenValid = GetAccessTokenData(tokenDTO.AccessToken, existingRefreshToken.UserId, existingRefreshToken.JwtTokenId);
+            if (!isTokenValid)
             {
-                existingRefreshToken.IsValid = false;
-                _db.SaveChanges();
+                await MarkTokenAsInvalid(existingRefreshToken);
                 return new TokenDTO();
             }
 
             // Check if a case tried to use invalid refresh token => fraud
             if (!existingRefreshToken.IsValid.Value)
             {
-                var chainRecords = _db.RefreshTokens
-                    .Where(u => u.UserId == existingRefreshToken.UserId && u.JwtTokenId == existingRefreshToken.JwtTokenId)
-                    .ExecuteUpdateAsync(u => u.SetProperty(token => token.IsValid, false));
-
+                await MarkAllTokensAsInValid(existingRefreshToken.UserId, existingRefreshToken.JwtTokenId);
                 return new TokenDTO();
             }
 
             // Check if a refresh token is expired => set invalid, return empty
             if (existingRefreshToken.ExpriesAt < DateTime.Now)
             {
-                existingRefreshToken.IsValid = false;
-                _db.SaveChanges();
+                await MarkTokenAsInvalid(existingRefreshToken);
                 return new TokenDTO();
             }
 
@@ -137,8 +130,7 @@ namespace MagicVilla_VillaAPI.Repository
             var newRefreshToken = CreateNewRefreshToken(existingRefreshToken.UserId, existingRefreshToken.JwtTokenId);
 
             // Revoke old refresh token
-            existingRefreshToken.IsValid = false;
-            _db.SaveChanges();
+            await MarkTokenAsInvalid(existingRefreshToken);
 
             // Generate new access token
             var applicationUser = _db.ApplicationUsers.FirstOrDefault(u => u.Id == existingRefreshToken.UserId);
@@ -203,12 +195,12 @@ namespace MagicVilla_VillaAPI.Repository
             };
 
             _db.RefreshTokens.Add(refreshToken);
-            _db.SaveChanges();
+            _db.SaveChangesAsync();
 
             return refreshToken.Refresh_Token;
         }
 
-        private (bool isSuccessful, string userId, string tokenId) GetAccessTokenData(string accessToken)
+        private bool GetAccessTokenData(string accessToken, string expectedUserId, string expectedTokenId)
         {
             try
             {
@@ -217,12 +209,26 @@ namespace MagicVilla_VillaAPI.Repository
                 var jwtTokenId = jwt.Claims.FirstOrDefault(i => i.Type == JwtRegisteredClaimNames.Jti).Value;
                 var userId = jwt.Claims.FirstOrDefault(i => i.Type == JwtRegisteredClaimNames.Sub).Value;
 
-                return (true, userId, jwtTokenId);
+                return userId == expectedTokenId && jwtTokenId == expectedTokenId;
             }
             catch (Exception)
             {
-                return (false, null, null);
+                return false;
             }
+        }
+
+        // Mark all the refresh tokens in the chain as invalid
+        private async Task MarkAllTokensAsInValid(string userId, string tokenId)
+        {
+            var chainRecords = _db.RefreshTokens
+                                .Where(u => u.UserId == userId && u.JwtTokenId == tokenId)
+                                .ExecuteUpdateAsync(u => u.SetProperty(token => token.IsValid, false));
+        }
+
+        private async Task MarkTokenAsInvalid(RefreshToken refreshToken)
+        {
+            refreshToken.IsValid = false;
+            await _db.SaveChangesAsync();
         }
     }
 }
