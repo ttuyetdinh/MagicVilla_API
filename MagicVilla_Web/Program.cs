@@ -31,6 +31,7 @@ namespace MagicVilla_Web
             builder.Services.AddScoped<IBaseServices, BaseServices>();
 
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            builder.Services.AddSingleton<IApiMessageRequestBuilder, ApiMessageRequestBuilder>();
 
             // add authentication
             builder.Services

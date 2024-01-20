@@ -26,14 +26,17 @@ namespace MagicVilla_Web.Services
         private readonly ITokenProvider _tokenProvider;
         private readonly string VillaApiUrl;
         private IHttpContextAccessor _httpContextAccessor;
+        private IApiMessageRequestBuilder _apiMessageRequestBuilder;
         public BaseServices(IHttpClientFactory httpClient, ITokenProvider tokenProvider,
-                            IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+                            IConfiguration configuration, IHttpContextAccessor httpContextAccessor,
+                            IApiMessageRequestBuilder apiMessageRequestBuilder)
         {
             responseModel = new APIResponse();
             this.httpClient = httpClient;
             _tokenProvider = tokenProvider;
             VillaApiUrl = configuration.GetValue<string>("ServiceUrls:VillaUrl");
             _httpContextAccessor = httpContextAccessor;
+            _apiMessageRequestBuilder = apiMessageRequestBuilder;
         }
 
         public async Task<T> SendAsync<T>(APIRequest apiRequest, bool withBearer = true)
@@ -46,42 +49,7 @@ namespace MagicVilla_Web.Services
                 // to avoid the InvalidOperationException because HttpRequestMessage cannot be reused after it's been sent.
                 var messageFactory = () =>
                 {
-                    HttpRequestMessage message = new HttpRequestMessage
-                    {
-                        RequestUri = new Uri(apiRequest.Url)
-                    };
-
-                    if (apiRequest.ContentType == ContentType.MultipartFormData)
-                    {
-                        message.Headers.Add("Accept", "*/*");
-                        var content = new MultipartFormDataContent();
-                        foreach (var prop in apiRequest.Data.GetType().GetProperties())
-                        {
-                            var value = prop.GetValue(apiRequest.Data);
-                            if (value is FormFile)
-                            {
-                                var file = (FormFile)value;
-                                if (file != null) content.Add(new StreamContent(file.OpenReadStream()), prop.Name, file.FileName);
-                            }
-                            else
-                            {
-                                content.Add(new StringContent(value == null ? "" : value.ToString()), prop.Name);
-                            }
-                        }
-                        message.Content = content;
-                    }
-                    else
-                    {
-                        message.Headers.Add("Accept", "application/json");
-
-                        if (apiRequest.Data != null)
-                        {
-                            message.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data), Encoding.UTF8, "application/json");
-                        }
-                    }
-                    message.Method = GetHttpMethod(apiRequest.ApiType);
-
-                    return message;
+                    return _apiMessageRequestBuilder.Build(apiRequest);
                 };
 
                 // call function to hanlde the send with refresh token
@@ -245,18 +213,6 @@ namespace MagicVilla_Web.Services
 
             _tokenProvider.SetToken(tokenDTO);
 
-        }
-
-        private HttpMethod GetHttpMethod(ApiType apiType)
-        {
-            return apiType switch
-            {
-                ApiType.GET => HttpMethod.Get,
-                ApiType.POST => HttpMethod.Post,
-                ApiType.PUT => HttpMethod.Put,
-                ApiType.DELETE => HttpMethod.Delete,
-                _ => HttpMethod.Get,
-            };
         }
     }
 }
