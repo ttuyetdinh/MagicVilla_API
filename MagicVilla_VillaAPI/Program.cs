@@ -118,4 +118,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// using this method to auto-update db if migrations is exsiting
+MigrationConfiguration.ApplyMigration(app);
+
 app.Run();

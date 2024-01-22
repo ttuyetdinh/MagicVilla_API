@@ -55,7 +55,7 @@ namespace MagicVilla_VillaAPI.Data
                 {
                     Id = 3,
                     Name = "Luxury Pool Villa",
-                    Details = "Hgh",
+                    Details = "Hghhhhh",
                     ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa4.jpg",
                     Occupancy = 4,
                     Rate = 400,
