@@ -69,8 +69,12 @@ builder.Services
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("APISettings:SecretKey"))),
+            // use 4 below lines to setting up issuer and audience
             ValidateIssuer = false,
             ValidateAudience = false,
+            // ValidIssuer = "PhucNguyen",
+            // ValidAudiences = new List<string>() { "PhucNguyen", "BaoThu" },
+
             ClockSkew = TimeSpan.Zero
         };
     });

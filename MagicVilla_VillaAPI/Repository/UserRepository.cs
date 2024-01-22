@@ -64,7 +64,7 @@ namespace MagicVilla_VillaAPI.Repository
 
             return new TokenDTO()
             {
-                AccessToken = await GetAccessToken(user, jwtTokenId),
+                AccessToken = await CreateAccessToken(user, jwtTokenId),
                 RefreshToken = CreateNewRefreshToken(user.Id, jwtTokenId)
             };
         }
@@ -136,7 +136,7 @@ namespace MagicVilla_VillaAPI.Repository
             var applicationUser = _db.ApplicationUsers.FirstOrDefault(u => u.Id == existingRefreshToken.UserId);
             if (applicationUser == null) return new TokenDTO();
 
-            var newAccessToken = await GetAccessToken(applicationUser, existingRefreshToken.JwtTokenId);
+            var newAccessToken = await CreateAccessToken(applicationUser, existingRefreshToken.JwtTokenId);
 
             return new TokenDTO()
             {
@@ -168,7 +168,7 @@ namespace MagicVilla_VillaAPI.Repository
             };
         }
 
-        private async Task<string> GetAccessToken(ApplicationUser user, string jwtTokenId)
+        private async Task<string> CreateAccessToken(ApplicationUser user, string jwtTokenId)
         {
             // generate JWT token if user is found
             var roles = await _userManager.GetRolesAsync(user);
@@ -181,8 +181,11 @@ namespace MagicVilla_VillaAPI.Repository
                     new Claim(ClaimTypes.Name, user.Name.ToString()),
                     new Claim(ClaimTypes.Role, roles.FirstOrDefault()),
                     new Claim(JwtRegisteredClaimNames.Jti, jwtTokenId),
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Id)
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+                    // can add audiences, issuer in both places
+                    new Claim(JwtRegisteredClaimNames.Iss, "PhucNguyen")
                 }),
+                Issuer = "PhucNguyen",
                 Expires = DateTime.Now.AddMinutes(1),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
