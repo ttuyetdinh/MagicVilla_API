@@ -1,6 +1,7 @@
 using System.Text;
 using MagicVilla_VillaAPI;
 using MagicVilla_VillaAPI.Data;
+using MagicVilla_VillaAPI.Filters;
 using MagicVilla_VillaAPI.Model;
 using MagicVilla_VillaAPI.Repository;
 using MagicVilla_VillaAPI.Repository.IRepository;
@@ -27,6 +28,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFramework
 
 // adding the response cache to the exist controller
 builder.Services.AddResponseCaching();
+
 builder.Services.AddControllers(option =>
 {
     option.CacheProfiles.Add("Default30sec",
@@ -35,6 +37,9 @@ builder.Services.AddControllers(option =>
             Duration = 30
         }
     );
+
+    // register custom error filter
+    option.Filters.Add<CustomExceptionFilter>();
 }).AddNewtonsoftJson();
 
 builder.Services.AddScoped<IVillaRepository, VillaRepository>();
@@ -107,6 +112,9 @@ if (app.Environment.IsDevelopment())
     }
     );
 }
+
+// register an error handler controller in the pipeline
+app.UseExceptionHandler("/ErrorHandling/ProcessError");
 
 app.UseResponseCaching();
 

@@ -14,16 +14,26 @@ namespace MagicVilla_VillaAPI.Controllers
     public class UserController : Controller
     {
         private readonly ILogger<VillaAPIController> _logger;
-        private readonly IUserRepository _dbUser;
+        private readonly IUserRepository _userRepo;
         private readonly IMapper _mapper;
         protected APIResponse _response;
 
-        public UserController(ILogger<VillaAPIController> logger, IUserRepository dbUser, IMapper mapper)
+        public UserController(ILogger<VillaAPIController> logger, IUserRepository userRepo, IMapper mapper)
         {
             _logger = logger;
-            _dbUser = dbUser;
+            _userRepo = userRepo;
             _mapper = mapper;
             _response = new APIResponse();
+        }
+
+        [HttpGet("error")]
+        public async Task<IActionResult> Error (){
+            throw new FileNotFoundException();
+        }
+
+        [HttpGet("imageError")]
+        public async Task<IActionResult> ImageError (){
+            throw new BadImageFormatException("Fake image exception"); 
         }
 
         [HttpPost("login")]
@@ -31,7 +41,7 @@ namespace MagicVilla_VillaAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO model)
         {
-            var tokenDto = await _dbUser.Login(model);
+            var tokenDto = await _userRepo.Login(model);
 
             if (tokenDto == null || tokenDto.AccessToken == "")
             {
@@ -56,7 +66,7 @@ namespace MagicVilla_VillaAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register([FromBody] RegisterationRequestDTO model)
         {
-            bool isUnique = _dbUser.IsUniqueUser(model.UserName);
+            bool isUnique = _userRepo.IsUniqueUser(model.UserName);
 
             if (!isUnique) return BadRequest(new APIResponse
             {
@@ -65,7 +75,7 @@ namespace MagicVilla_VillaAPI.Controllers
                 ErrorMessage = new List<string>() { "Username already exist" }
             });
 
-            var user = await _dbUser.Register(model);
+            var user = await _userRepo.Register(model);
 
             if (user == null) return BadRequest(new APIResponse
             {
@@ -89,7 +99,7 @@ namespace MagicVilla_VillaAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var tokenDTOResponse = await _dbUser.RefreshAccessToken(tokenDTO);
+                var tokenDTOResponse = await _userRepo.RefreshAccessToken(tokenDTO);
                 if (tokenDTOResponse == null || string.IsNullOrEmpty(tokenDTOResponse.AccessToken))
                 {
                     _response.IsSuccess = false;
@@ -129,7 +139,7 @@ namespace MagicVilla_VillaAPI.Controllers
                 });
             };
 
-            await _dbUser.RevokeRefreshToken(tokenDTO);
+            await _userRepo.RevokeRefreshToken(tokenDTO);
             return Ok(new APIResponse
             {
                 IsSuccess = true,
