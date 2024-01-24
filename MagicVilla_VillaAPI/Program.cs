@@ -1,7 +1,9 @@
 using System.Text;
 using MagicVilla_VillaAPI;
 using MagicVilla_VillaAPI.Data;
+using MagicVilla_VillaAPI.Extensions;
 using MagicVilla_VillaAPI.Filters;
+using MagicVilla_VillaAPI.MiddleWares;
 using MagicVilla_VillaAPI.Model;
 using MagicVilla_VillaAPI.Repository;
 using MagicVilla_VillaAPI.Repository.IRepository;
@@ -40,7 +42,13 @@ builder.Services.AddControllers(option =>
 
     // register custom error filter
     option.Filters.Add<CustomExceptionFilter>();
-}).AddNewtonsoftJson();
+}).AddNewtonsoftJson()
+// congif this to use custom error link 
+.ConfigureApiBehaviorOptions(option =>{
+    option.ClientErrorMapping[StatusCodes.Status500InternalServerError] = new ClientErrorData(){
+        Link = "https://www.youtube.com/"
+    };
+});
 
 builder.Services.AddScoped<IVillaRepository, VillaRepository>();
 builder.Services.AddScoped<IVillaNumberRepository, VillaNumberRepository>();
@@ -113,8 +121,14 @@ if (app.Environment.IsDevelopment())
     );
 }
 
-// register an error handler controller in the pipeline
-app.UseExceptionHandler("/ErrorHandling/ProcessError");
+// register an error handler controller in the pipeline using the default extension method provied by asp.net
+// app.UseExceptionHandler("/ErrorHandling/ProcessError");
+
+// using the custom extension method created by your own
+// app.HandleError(app.Environment.IsDevelopment());
+
+// register a custom middleware to handle the exception
+app.UseMiddleware<CustomExceptionMiddleware>();
 
 app.UseResponseCaching();
 

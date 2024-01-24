@@ -9,9 +9,9 @@ namespace MagicVilla_VillaAPI
 {
     public static class MigrationConfiguration
     {
-        public static void ApplyMigration(WebApplication app)
+        public static void ApplyMigration(IApplicationBuilder app)
         {
-            using (var scope = app.Services.CreateScope())
+            using (var scope = app.ApplicationServices.CreateScope())
             {
                 var _db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 

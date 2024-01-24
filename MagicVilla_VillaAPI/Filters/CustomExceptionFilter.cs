@@ -11,12 +11,12 @@ namespace MagicVilla_VillaAPI.Filters
     {
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            if (context.Exception is FileNotFoundException file){
-                context.Result = new ObjectResult("File not found is handled in the filter"){
-                    StatusCode = 503
-                };
-                context.ExceptionHandled = true;
-            }
+            // if (context.Exception is FileNotFoundException file){
+            //     context.Result = new ObjectResult("File not found is handled in the filter"){
+            //         StatusCode = 503
+            //     };
+            //     context.ExceptionHandled = true;
+            // }
         }
 
         public void OnActionExecuting(ActionExecutingContext context)
